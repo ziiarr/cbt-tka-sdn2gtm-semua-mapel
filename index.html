@@ -539,15 +539,64 @@
     .mapel-count-card .m-num { font-size: 20px; font-weight: 800; color: var(--primary); margin-top: 4px; }
     .mapel-count-card .m-num.zero { color: #94a3b8; }
 
-    @media (max-width: 900px) {
-      .navbar { grid-template-columns: 1fr; text-align: center; padding: 10px 16px; }
-      .brand, .school-center, .nav-actions { justify-self: center; }
+    @media (max-width: 960px), (max-height: 520px) {
+      .navbar {
+        position: relative;
+        grid-template-columns: 1fr auto;
+        text-align: left;
+        padding: 7px 14px;
+        gap: 6px;
+      }
+      .brand { justify-self: start; gap: 8px; }
+      .brand-logo { width: 30px; height: 30px; font-size: 11px; }
+      .brand h1 { font-size: 13px; }
+      .brand p { display: none; }
+      .school-center {
+        grid-column: 1 / -1;
+        order: 3;
+        padding: 3px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .school-center h2 { font-size: 12px; }
+      .school-center span { font-size: 10px; }
+      .nav-actions { justify-self: end; }
+      .user-badge-top { font-size: 11.5px; gap: 6px; }
+      .grad-cap-box { width: 26px; height: 26px; }
       .confirm-layout { grid-template-columns: 1fr; }
       .decorative-banner { display: none; }
       .workspace.split-view { grid-template-columns: 1fr; }
-      .wacana-pane { max-height: 240px; }
-      .bottom-nav { padding: 10px 12px; gap: 6px; }
+      .wacana-pane { max-height: 220px; }
+      .bottom-nav { padding: 8px 12px; gap: 6px; }
       .btn { padding: 8px 12px; font-size: 12.5px; }
+    }
+    /* Saat mode ujian berlangsung di layar HP/tablet pendek (landscape maupun portrait), ringkas header biru jadi 1 baris tipis */
+    body.exam-compact-header .navbar {
+      position: relative;
+      grid-template-columns: 1fr auto;
+      padding: 6px 14px;
+      gap: 8px;
+    }
+    body.exam-compact-header .brand p,
+    body.exam-compact-header .school-center span {
+      display: none;
+    }
+    body.exam-compact-header .school-center {
+      grid-column: auto;
+      order: 0;
+      padding: 2px 10px;
+      background: transparent;
+      border: none;
+    }
+    body.exam-compact-header .school-center h2 {
+      font-size: 13px;
+    }
+    @media (max-width: 960px) {
+      body.exam-compact-header .school-center {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -582,11 +631,11 @@
   </header>
 
   <main class="container" id="appMainContainer">
-    <!-- PENGINGAT POSISI LANDSCAPE UNTUK HP/TABLET PORTRAIT -->
+    <!-- PENGINGAT POSISI LAYAR OPSIONAL -->
     <div id="landscapePromptBanner" class="landscape-helper">
-      <span>📱 Putar perangkat ke posisi <strong>mendatar (Landscape)</strong> agar bacaan dan soal tampil penuh.</span>
+      <span>📱 Layar mendukung mode <strong>Tegak (Portrait)</strong> maupun <strong>Mendatar (Landscape)</strong> sesuai kenyamananmu.</span>
       <div style="display:flex; gap:6px; flex-shrink:0;">
-        <button type="button" class="btn-fs" onclick="enterFullscreenAndLandscape()">Putar &amp; Fullscreen</button>
+        <button type="button" class="btn-fs" onclick="enterFullscreenAndLandscape(false)">⛶ Layar Penuh</button>
         <button type="button" class="btn-fs" style="background:#e2e8f0; color:#334155; border-color:#cbd5e1;" onclick="dismissLandscapeBanner()">Tutup</button>
       </div>
     </div>
@@ -1303,7 +1352,7 @@
     // =========================================================================
     let landscapeDismissed = false;
 
-    async function enterFullscreenAndLandscape() {
+    async function enterFullscreenAndLandscape(forceLockLandscape = false) {
       try {
         const docEl = document.documentElement;
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
@@ -1313,8 +1362,10 @@
       } catch (e) {}
 
       try {
-        if (screen.orientation && screen.orientation.lock) {
+        if (forceLockLandscape && screen.orientation && screen.orientation.lock) {
           await screen.orientation.lock("landscape");
+        } else if (screen.orientation && screen.orientation.unlock) {
+          screen.orientation.unlock();
         }
       } catch (e) {}
       updateLandscapeBannerVisibility();
@@ -1740,6 +1791,7 @@
 
       document.getElementById("confirmTestSection").classList.add("hidden");
       document.getElementById("subtestBreakSection").classList.add("hidden");
+      document.body.classList.add("exam-compact-header");
       document.getElementById("examSection").classList.remove("hidden");
       document.getElementById("totalNumDisplay").textContent = state.questions.length;
 
@@ -2139,6 +2191,7 @@
       const nextSub = state.subtests[state.subtestIndex + 1];
 
       document.getElementById("examSection").classList.add("hidden");
+      document.body.classList.add("exam-compact-header");
       document.getElementById("subtestBreakSection").classList.remove("hidden");
 
       document.getElementById("breakCompletedBadge").textContent =
@@ -2235,6 +2288,7 @@
 
       document.getElementById("examSection").classList.add("hidden");
       document.getElementById("subtestBreakSection").classList.add("hidden");
+      document.body.classList.remove("exam-compact-header");
       document.getElementById("resultSection").classList.remove("hidden");
 
       document.getElementById("resTitle").textContent = autoByViolation
