@@ -1368,6 +1368,7 @@
           screen.orientation.unlock();
         }
       } catch (e) {}
+      requestScreenWakeLock();
       updateLandscapeBannerVisibility();
     }
 
@@ -1413,10 +1414,49 @@
     window.addEventListener("orientationchange", updateLandscapeBannerVisibility);
 
     // =========================================================================
+    // SCREEN WAKE LOCK API (MENCEGAH LAYAR HP MATI OTOMATIS SAAT UJIAN)
+    // =========================================================================
+    let screenWakeLock = null;
+
+    async function requestScreenWakeLock() {
+      try {
+        if ("wakeLock" in navigator) {
+          screenWakeLock = await navigator.wakeLock.request("screen");
+          screenWakeLock.addEventListener("release", () => {
+            screenWakeLock = null;
+          });
+        }
+      } catch (e) {}
+    }
+
+    function releaseScreenWakeLock() {
+      try {
+        if (screenWakeLock) {
+          screenWakeLock.release();
+          screenWakeLock = null;
+        }
+      } catch (e) {}
+    }
+
+    // Aktifkan kembali Wake Lock jika layar menyala lagi setelah terkunci sementara
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && examSecurityActive && !state.isFinished) {
+        requestScreenWakeLock();
+      }
+    });
+
+    // =========================================================================
     // MODUL KEAMANAN UJIAN (TAB SWITCH, BLUR / SPLIT-SCREEN, BACK, 3X LOCK)
     // =========================================================================
     let examSecurityActive = false;
     let lastViolationTimestamp = 0;
+    let lastUserActivityTimestamp = Date.now();
+
+    ["touchstart", "mousedown", "keydown", "scroll"].forEach(evtName => {
+      window.addEventListener(evtName, () => {
+        lastUserActivityTimestamp = Date.now();
+      }, { passive: true });
+    });
 
     function updateViolationBadgeUI() {
       const count = state.violations || 0;
@@ -1473,6 +1513,8 @@
 
     function enableExamSecurity() {
       examSecurityActive = true;
+      lastUserActivityTimestamp = Date.now();
+      requestScreenWakeLock();
       updateViolationBadgeUI();
       updateLandscapeBannerVisibility();
 
@@ -1491,13 +1533,21 @@
       document.onvisibilitychange = function () {
         if (!examSecurityActive || state.isFinished) return;
         if (document.hidden) {
+          // Jika siswa diam membaca bacaan > 12 detik tanpa menyentuh layar, layar mati karena screen timeout HP (bukan pindah tab/aplikasi)
+          const idleMs = Date.now() - lastUserActivityTimestamp;
+          if (idleMs > 12000) return;
           registerExamViolation("berpindah tab atau keluar dari aplikasi browser");
         }
       };
 
       window.onblur = function () {
         if (!examSecurityActive || state.isFinished) return;
-        registerExamViolation("membuka layar belah (split-screen) atau aplikasi lain");
+        // Tunggu 350ms untuk membedakan layar HP mati otomatis vs benar-benar membuka split-screen/aplikasi lain
+        setTimeout(() => {
+          if (!examSecurityActive || state.isFinished) return;
+          if (document.hidden) return; // Ditangani oleh visibilitychange (dengan pengecekan idle screen-off)
+          registerExamViolation("membuka layar belah (split-screen) atau aplikasi lain");
+        }, 350);
       };
 
       window.onbeforeunload = function (e) {
@@ -1510,6 +1560,7 @@
 
     function disableExamSecurity() {
       examSecurityActive = false;
+      releaseScreenWakeLock();
       window.onpopstate = null;
       document.onvisibilitychange = null;
       window.onblur = null;
