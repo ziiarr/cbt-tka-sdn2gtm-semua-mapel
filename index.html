@@ -539,6 +539,101 @@
     .mapel-count-card .m-num { font-size: 20px; font-weight: 800; color: var(--primary); margin-top: 4px; }
     .mapel-count-card .m-num.zero { color: #94a3b8; }
 
+
+    /* KARTU PESERTA & MODE CETAK A4 */
+    .cards-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .participant-card-item {
+      border: 1.5px dashed #64748b;
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #ffffff;
+      color: #0f172a;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .pcard-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid #1e4b7a;
+      padding-bottom: 7px;
+      margin-bottom: 8px;
+    }
+    .pcard-logo {
+      width: 34px; height: 34px; border-radius: 6px;
+      background: #1e4b7a; color: white; font-weight: 800; font-size: 11px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .pcard-school {
+      font-size: 11.5px; font-weight: 800; color: #1e4b7a; text-transform: uppercase; line-height: 1.2;
+    }
+    .pcard-title {
+      font-size: 10.5px; font-weight: 700; color: #334155; margin-top: 2px;
+    }
+    .pcard-table {
+      width: 100%; font-size: 11.5px; border-collapse: collapse;
+    }
+    .pcard-table td {
+      padding: 2.5px 4px; vertical-align: top;
+    }
+    .pcard-table td.lbl {
+      width: 96px; color: #475569; font-weight: 600;
+    }
+    .pcard-cred {
+      font-family: 'Courier New', monospace;
+      font-weight: 800;
+      font-size: 12.5px;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      display: inline-block;
+    }
+    .pcard-footer {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    @media print {
+      body { background: white !important; }
+      #appNavbar, .proctor-tabs, .no-print, #landscapePromptBanner { display: none !important; }
+      .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      #teacherSection { box-shadow: none !important; padding: 0 !important; border: none !important; }
+      #proctorTabRekap, #proctorTabImport, #proctorTabBank { display: none !important; }
+      #proctorTabKartu { display: block !important; }
+      .cards-preview-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-top: 0 !important;
+      }
+      .participant-card-item {
+        border: 1.2px dashed #334155 !important;
+        padding: 10px 12px !important;
+      }
+      .pcard-cred {
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pcard-logo {
+        background: #1e4b7a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
     @media (max-width: 960px), (max-height: 520px) {
       .navbar {
         position: relative;
@@ -597,6 +692,211 @@
       body.exam-compact-header .school-center {
         display: none;
       }
+    }
+
+    /* ACCORDION & GRID DAFTAR JENIS PENILAIAN TERDAFTAR */
+    .jenis-list-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .jenis-search-input {
+      padding: 6px 11px;
+      border: 1px solid #93c5fd;
+      border-radius: 7px;
+      font-size: 12.5px;
+      background: #ffffff;
+      color: #1e293b;
+      min-width: 220px;
+      outline: none;
+    }
+    .jenis-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+    }
+    .jenis-acc-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .btn-acc-toggle-all {
+      background: #ffffff;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-acc-toggle-all:hover {
+      background: #dbeafe;
+    }
+    .jenis-accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .jenis-acc-item {
+      background: #ffffff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .jenis-acc-item.open {
+      border-color: #60a5fa;
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.06);
+    }
+    .jenis-acc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #ffffff;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .jenis-acc-header:hover {
+      background: #f8fafc;
+    }
+    .jenis-acc-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .jenis-acc-chevron {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .jenis-acc-item.open .jenis-acc-chevron {
+      transform: rotate(90deg);
+      background: #dbeafe;
+    }
+    .jenis-acc-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .jenis-badge-count {
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .jenis-badge-soal {
+      background: #dcfce7;
+      color: #166534;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .jenis-badge-soal.empty {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    .btn-delete-group {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-delete-group:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+    }
+    .jenis-acc-body {
+      display: none;
+      padding: 12px 14px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+    .jenis-acc-item.open .jenis-acc-body {
+      display: block;
+    }
+    .jenis-mapel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    .jenis-mapel-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .jenis-mapel-card:hover {
+      border-color: #60a5fa;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    }
+    .jenis-mapel-info {
+      min-width: 0;
+    }
+    .jenis-mapel-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+    .jenis-mapel-meta {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .btn-trash-mapel {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-trash-mapel:hover {
+      background: #fee2e2;
+      border-color: #f87171;
     }
   </style>
 </head>
@@ -902,7 +1202,7 @@
     <!-- PANEL PROKTOR: PENGATURAN, MONITOR NILAI, IMPORT EXCEL & BANK SOAL  -->
     <!-- =================================================================== -->
     <section id="teacherSection" class="card hidden">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+      <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
         <div>
           <h2 style="font-size:20px; color:var(--primary-dark);">Panel Proktor &amp; Manajemen Bank Soal</h2>
           <p style="font-size:13px; color:var(--text-muted);" id="teacherIdentityLabel">Terautentikasi</p>
@@ -914,7 +1214,7 @@
       </div>
 
       <!-- NAVIGASI TAB PROKTOR -->
-      <div class="proctor-tabs">
+      <div class="proctor-tabs no-print">
         <button type="button" class="proctor-tab-btn active" id="tabBtnRekap" onclick="switchProctorTab('rekap')">
           📊 Pengaturan &amp; Monitor Nilai
         </button>
@@ -924,10 +1224,55 @@
         <button type="button" class="proctor-tab-btn" id="tabBtnBank" onclick="switchProctorTab('bank')">
           🗂️ Bank Soal &amp; Upload Gambar
         </button>
+        <button type="button" class="proctor-tab-btn" id="tabBtnKartu" onclick="switchProctorTab('kartu')">
+          🪪 Cetak Kartu Peserta
+        </button>
       </div>
 
       <!-- TAB 1: PENGATURAN LENGKAP & MONITOR NILAI -->
       <div id="proctorTabRekap">
+        <!-- KARTU TAMBAH JENIS PENILAIAN / PAKET SOAL BARU -->
+        <div class="settings-panel-box" style="background:#eff6ff; border-color:#93c5fd;">
+          <div class="settings-panel-header" style="margin-bottom:12px; padding-bottom:10px; border-bottom-color:#bfdbfe;">
+            <div>
+              <strong style="font-size:15px; color:#1e40af; display:block;">➕ Tambah Jenis Penilaian / Paket Soal Baru</strong>
+              <span style="font-size:12px; color:#1e3a8a;">Buat paket penilaian baru per mata pelajaran (misal: <em>Penilaian TP 1</em>, <em>Penilaian TP 2</em>, <em>STS 2026/2027</em>, <em>SAS 1 2026/2027</em>). Setiap sesi otomatis diawali tahap <strong>Latihan</strong>.</span>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; align-items:end;">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e3a8a; margin-bottom:5px;">Mata Pelajaran</label>
+              <select id="newJenisMapelSelect" class="form-control"></select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e3a8a; margin-bottom:5px;">Nama Jenis Penilaian</label>
+              <input type="text" id="newJenisNamaInput" class="form-control" placeholder="Contoh: Penilaian TP 1" />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e3a8a; margin-bottom:5px;">Durasi Pengerjaan (Menit)</label>
+              <input type="number" id="newJenisDurasiInput" class="form-control" min="5" max="240" value="60" />
+            </div>
+            <div>
+              <button type="button" id="btnAddJenisPenilaian" class="btn btn-next" style="width:100%; height:39px;" onclick="submitNewJenisPenilaian()">
+                + Tambahkan ke Daftar
+              </button>
+            </div>
+          </div>
+          <div style="margin-top:14px; padding-top:12px; border-top:1px dashed #93c5fd;">
+            <div class="jenis-list-toolbar">
+              <div style="font-size:12.5px; font-weight:700; color:#1e3a8a;">
+                Daftar Paket / Jenis Penilaian Terdaftar (Dikelompokkan per Jenis Penilaian):
+              </div>
+              <div class="jenis-acc-actions">
+                <input type="text" id="searchJenisInput" class="jenis-search-input" placeholder="🔍 Cari mapel / jenis penilaian..." oninput="renderRegisteredJenisAccordion()" />
+                <button type="button" class="btn-acc-toggle-all" onclick="toggleAllJenisGroups(true)">Buka Semua</button>
+                <button type="button" class="btn-acc-toggle-all" onclick="toggleAllJenisGroups(false)">Tutup Semua</button>
+              </div>
+            </div>
+            <div id="registeredJenisAccordion" class="jenis-accordion-list"></div>
+          </div>
+        </div>
+
         <!-- KARTU PENGATURAN LENGKAP (8 PARAMETER SHEET PENGATURAN) -->
         <div class="settings-panel-box">
           <div class="settings-panel-header">
@@ -1134,10 +1479,15 @@
         <div id="mapelCountsGrid" class="mapel-count-grid"></div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-          <h3 style="font-size:16px; color:var(--primary-dark);">Daftar Soal &amp; Tambah Gambar Ilustrasi</h3>
-          <select id="filterBankMapel" class="form-control" style="width:auto; min-width:220px;" onchange="renderBankSoalTable()">
-            <option value="ALL">Semua Mata Pelajaran</option>
-          </select>
+          <h3 style="font-size:16px; color:var(--primary-dark);">Daftar Soal, Edit &amp; Upload Gambar Ilustrasi</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            <select id="filterBankMapel" class="form-control" style="width:auto; min-width:220px;" onchange="renderBankSoalTable()">
+              <option value="ALL">Semua Mata Pelajaran</option>
+            </select>
+            <button type="button" class="btn btn-finish" onclick="openSoalEditorModal(null)">
+              + Tambah Soal Baru
+            </button>
+          </div>
         </div>
 
         <input type="file" id="hiddenSoalImageInput" accept="image/*" class="hidden" onchange="handleSoalImageFileChosen(event)" />
@@ -1150,8 +1500,8 @@
                 <th style="width:160px;">Mata Pelajaran</th>
                 <th style="width:115px;">Tipe</th>
                 <th>Cuplikan Pertanyaan</th>
-                <th style="width:110px;">Gambar</th>
-                <th style="width:150px;">Aksi</th>
+                <th style="width:95px;">Gambar</th>
+                <th style="width:245px;">Aksi</th>
               </tr>
             </thead>
             <tbody id="bankSoalTableBody">
@@ -1159,6 +1509,30 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <!-- TAB 4: CETAK KARTU PESERTA UJIAN -->
+      <div id="proctorTabKartu" class="hidden">
+        <div class="settings-panel-box no-print" style="margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 style="font-size:16px; color:var(--primary-dark);">Cetak Kartu Login Peserta Ujian</h3>
+              <p style="font-size:12.5px; color:#475569; margin-top:2px;">
+                Data otomatis diambil dari sheet <code>Akun_Siswa</code>. Siap dicetak ukuran kertas A4/F4 (2 kolom per baris).
+              </p>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+              <select id="filterKartuKelas" class="form-control" style="width:auto; min-width:145px;" onchange="renderKartuPesertaGrid()">
+                <option value="ALL">Semua Kelas</option>
+              </select>
+              <input type="text" id="searchKartuSiswa" class="form-control" style="width:auto; min-width:200px;" placeholder="Cari nama / no. peserta..." oninput="renderKartuPesertaGrid()" />
+              <button type="button" class="btn btn-finish" onclick="window.print()">
+                🖨️ Cetak Kartu (PDF / Printer)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="kartuPesertaGrid" class="cards-preview-grid"></div>
       </div>
     </section>
   </main>
@@ -1258,6 +1632,141 @@
       <button type="button" class="btn btn-prev" style="width:100%;" onclick="acknowledgeSecurityWarning()">
         Saya Mengerti &amp; Lanjutkan Ujian
       </button>
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH / EDIT SOAL MANUAL (PROKTOR) -->
+  <div id="soalEditorModal" class="overlay hidden" onclick="if(event.target===this) closeSoalEditorModal()">
+    <div class="modal-box" style="max-width:680px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="soalEditorTitle" style="font-size:18px; color:var(--primary-dark);">Tambah Soal Baru</h3>
+          <p id="soalEditorSubtitle" style="font-size:12px; color:#64748b; margin-top:2px;">Isi butir soal dengan lengkap lalu klik Simpan.</p>
+        </div>
+        <button type="button" class="close-btn" onclick="closeSoalEditorModal()">&times;</button>
+      </div>
+
+      <form id="soalEditorForm" onsubmit="submitSoalEditorForm(event)">
+        <input type="hidden" id="editSoalMode" value="CREATE" />
+        <input type="hidden" id="editSoalId" value="" />
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div class="field-group">
+            <label for="editSoalTargetSelect">Mata Pelajaran &amp; Jenis Penilaian *</label>
+            <select id="editSoalTargetSelect" class="form-control" required></select>
+          </div>
+          <div class="field-group">
+            <label for="editSoalTipeSelect">Tipe Soal *</label>
+            <select id="editSoalTipeSelect" class="form-control" onchange="toggleSoalEditorFields()">
+              <option value="PG">PG (Pilihan Ganda - 1 Jawaban)</option>
+              <option value="PGK_MULTI">PGK_MULTI (Pilihan Ganda Kompleks - Banyak Jawaban)</option>
+              <option value="PGK_KATEGORI">PGK_KATEGORI (Benar / Salah per Pernyataan)</option>
+              <option value="SURVEI">SURVEI (Angket / Skala Tanpa Skor Salah)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-bottom:12px;">
+          <label for="editSoalWacana">Teks Wacana / Bacaan (Opsional — kosongkan jika tidak ada)</label>
+          <textarea id="editSoalWacana" class="form-control" rows="3" placeholder="Ketik teks bacaan di sini jika soal memiliki wacana di panel kiri..."></textarea>
+        </div>
+
+        <div class="field-group" style="margin-bottom:12px;">
+          <label for="editSoalPertanyaan">Pertanyaan Soal *</label>
+          <textarea id="editSoalPertanyaan" class="form-control" rows="3" required placeholder="Ketik pertanyaan soal di sini..."></textarea>
+        </div>
+
+        <!-- BLOK OPSI A - D (PG / PGK_MULTI / SURVEI) -->
+        <div id="editSoalOpsiBlock" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">
+          <div class="field-group">
+            <label for="editSoalOpsiA">Opsi A</label>
+            <input type="text" id="editSoalOpsiA" class="form-control" placeholder="Isi pilihan A" />
+          </div>
+          <div class="field-group">
+            <label for="editSoalOpsiB">Opsi B</label>
+            <input type="text" id="editSoalOpsiB" class="form-control" placeholder="Isi pilihan B" />
+          </div>
+          <div class="field-group">
+            <label for="editSoalOpsiC">Opsi C</label>
+            <input type="text" id="editSoalOpsiC" class="form-control" placeholder="Isi pilihan C" />
+          </div>
+          <div class="field-group">
+            <label for="editSoalOpsiD">Opsi D</label>
+            <input type="text" id="editSoalOpsiD" class="form-control" placeholder="Isi pilihan D" />
+          </div>
+        </div>
+
+        <!-- BLOK PERNYATAAN 1 - 3 (PGK_KATEGORI) -->
+        <div id="editSoalKategoriBlock" class="hidden" style="margin-bottom:12px; background:#faf5ff; padding:12px; border-radius:8px; border:1px solid #e9d5ff;">
+          <div class="field-group" style="margin-bottom:8px;">
+            <label for="editSoalPernyataan1">Pernyataan 1</label>
+            <input type="text" id="editSoalPernyataan1" class="form-control" placeholder="Ketik pernyataan ke-1..." />
+          </div>
+          <div class="field-group" style="margin-bottom:8px;">
+            <label for="editSoalPernyataan2">Pernyataan 2</label>
+            <input type="text" id="editSoalPernyataan2" class="form-control" placeholder="Ketik pernyataan ke-2..." />
+          </div>
+          <div class="field-group">
+            <label for="editSoalPernyataan3">Pernyataan 3 (Opsional jika hanya 2 pernyataan)</label>
+            <input type="text" id="editSoalPernyataan3" class="form-control" placeholder="Ketik pernyataan ke-3..." />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div class="field-group">
+            <label for="editSoalKunci">Kunci Jawaban *</label>
+            <input type="text" id="editSoalKunci" class="form-control" style="text-transform:uppercase; font-weight:700;" required placeholder="Contoh: B  atau  A, C  atau  B, S, B" />
+            <small id="editSoalKunciHint" style="font-size:11px; color:#64748b; display:block; margin-top:4px;">PG: ketik 1 huruf (misal: B)</small>
+          </div>
+          <div class="field-group">
+            <label for="editSoalGambar">Link Gambar (Opsional)</label>
+            <input type="text" id="editSoalGambar" class="form-control" placeholder="Otomatis terisi jika upload gambar" />
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-bottom:16px;">
+          <label for="editSoalPembahasan">Pembahasan (Opsional)</label>
+          <textarea id="editSoalPembahasan" class="form-control" rows="2" placeholder="Penjelasan jawaban benar untuk siswa..."></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn" style="background:#e2e8f0;" onclick="closeSoalEditorModal()">Batal</button>
+          <button type="submit" id="btnSaveSoalEditor" class="btn btn-finish">💾 Simpan Soal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI HAPUS JENIS PENILAIAN (PROKTOR) -->
+  <div id="deleteJenisConfirmModal" class="overlay hidden" onclick="if(event.target===this) closeDeleteJenisModal()">
+    <div class="modal-box" style="max-width:480px; border-top: 5px solid var(--danger);">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="width:36px; height:36px; border-radius:8px; background:#fee2e2; color:#dc2626; display:inline-flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🗑️</span>
+          <div>
+            <h3 id="delJenisModalTitle" style="font-size:17px; color:#991b1b;">Konfirmasi Hapus</h3>
+            <p style="font-size:11.5px; color:#64748b; margin-top:1px;">Periksa detail paket yang akan dihapus sebelum melanjutkan</p>
+          </div>
+        </div>
+        <button type="button" class="close-btn" onclick="closeDeleteJenisModal()">&times;</button>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:11px 13px; margin-bottom:12px;">
+        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Target Penghapusan</div>
+        <div id="delJenisTargetName" style="font-size:14.5px; font-weight:700; color:#0f172a; margin-top:3px;">-</div>
+      </div>
+
+      <div id="delJenisImpactBox" style="border-radius:8px; padding:11px 13px; font-size:13px; line-height:1.5; margin-bottom:14px;"></div>
+
+      <label id="delJenisCheckWrap" class="confirm-check-box hidden" style="background:#fef2f2; border-color:#fecaca; color:#991b1b; margin-bottom:14px;">
+        <input type="checkbox" id="chkConfirmDeleteJenis" onchange="toggleDeleteJenisConfirmBtn()" style="accent-color:var(--danger);" />
+        <span>Saya memahami bahwa penghapusan ini bersifat permanen dan butir soal terkait akan ikut terhapus.</span>
+      </label>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" id="btnCancelDeleteJenis" class="btn" style="background:#e2e8f0; color:#1e293b;" onclick="closeDeleteJenisModal()">Batal</button>
+        <button type="button" id="btnConfirmDeleteJenis" class="btn btn-prev" onclick="executeConfirmedDeleteJenis()">🗑️ Ya, Hapus</button>
+      </div>
     </div>
   </div>
 
@@ -2506,6 +3015,7 @@
       soalCounts: {},
       soalBrief: [],
       rekap: [],
+      siswaList: [],
       info: {}
     };
     let parsedExcelRows = [];
@@ -2523,10 +3033,11 @@
     }
 
     function switchProctorTab(tabName) {
-      const tabs = ["rekap", "import", "bank"];
+      const tabs = ["rekap", "import", "bank", "kartu"];
       tabs.forEach(t => {
         const btn = document.getElementById("tabBtn" + t.charAt(0).toUpperCase() + t.slice(1));
         const panel = document.getElementById("proctorTab" + t.charAt(0).toUpperCase() + t.slice(1));
+        if (!btn || !panel) return;
         if (t === tabName) {
           btn.classList.add("active");
           panel.classList.remove("hidden");
@@ -2535,6 +3046,7 @@
           panel.classList.add("hidden");
         }
       });
+      if (tabName === "kartu") renderKartuPesertaGrid();
     }
 
     document.getElementById("teacherLoginForm").addEventListener("submit", async (e) => {
@@ -2600,6 +3112,7 @@
           soalCounts: data.soalCounts || {},
           soalBrief: data.soalBrief || [],
           rekap: data.rekap || [],
+          siswaList: data.siswaList || [],
           info: data.info || {}
         };
 
@@ -2610,6 +3123,7 @@
         applySettingsInfoToUI(teacherDataCache.info);
         renderTeacherTable();
         renderBankSoalOverview();
+        renderKartuPesertaGrid();
         return true;
       } catch (err) {
         alert("Gagal memuat data proktor: " + err.message);
@@ -2621,46 +3135,538 @@
       const mapels = teacherDataCache.daftarMapel;
       const sesiAktif = String(teacherDataCache.info.sesiAktif || "").trim();
 
-      // 1. Dropdown Sesi Aktif (termasuk Paket & TUTUP)
+      // 1. Dropdown Sesi Aktif (menampilkan Label Lengkap: Mapel - Jenis Penilaian)
       const selSesi = document.getElementById("selectSesiGuru");
-      let sesiOpts = mapels.map(m => {
-        const val = m.tipeSesi === "PAKET" ? m.kode : m.nama;
-        const label = m.tipeSesi === "PAKET" ? `${m.kode} — ${m.nama}` : `${m.nama} (${m.durasi} mnt)`;
-        return `<option value="${val}">${label}</option>`;
-      }).join("");
+      let sesiOpts = mapels
+        .filter(m => m.tipeSesi !== "LATIHAN")
+        .map(m => {
+          const lbl = m.labelLengkap || (m.jenisPenilaian ? `${m.nama} - ${m.jenisPenilaian}` : m.nama);
+          return `<option value="${m.kode}">${lbl} (${m.durasi} mnt)</option>`;
+        }).join("");
       sesiOpts += `<option value="TUTUP">TUTUP (Nonaktifkan Sesi Ujian)</option>`;
       selSesi.innerHTML = sesiOpts;
 
-      const matchSesi = Array.from(selSesi.options).find(o => o.value.toLowerCase() === sesiAktif.toLowerCase());
+      const matchSesi = Array.from(selSesi.options).find(o =>
+        o.value.toLowerCase() === sesiAktif.toLowerCase() ||
+        o.text.toLowerCase().startsWith(sesiAktif.toLowerCase())
+      );
       if (matchSesi) selSesi.value = matchSesi.value;
 
-      // 2. Dropdown Mapel (tampilkan semua mapel satuan termasuk yang berawalan Latihan, kecuali paket gabungan seperti PAKET_HARI_1)
-      const nonPaketMapels = mapels.filter(m => !String(m.kode || "").toUpperCase().startsWith("PAKET_"));
+      // 2. Dropdown Mata Pelajaran Dasar pada form "+ Tambah Jenis Penilaian"
+      const baseMapelNames = [...new Set(
+        mapels
+          .filter(m => m.tipeSesi !== "LATIHAN" && !String(m.kode || "").toUpperCase().startsWith("PAKET_"))
+          .map(m => m.nama)
+          .filter(Boolean)
+      )];
+      const newJenisSel = document.getElementById("newJenisMapelSelect");
+      if (newJenisSel) {
+        const prevNewM = newJenisSel.value;
+        const bulkOpt = baseMapelNames.length > 1
+          ? `<option value="__ALL__">📚 Semua Mata Pelajaran (${baseMapelNames.length} Mapel Sekaligus)</option>`
+          : "";
+        newJenisSel.innerHTML = bulkOpt + baseMapelNames.map(nm => `<option value="${nm}">${nm}</option>`).join("");
+        if (prevNewM && (prevNewM === "__ALL__" || baseMapelNames.includes(prevNewM))) {
+          newJenisSel.value = prevNewM;
+        }
+      }
+
+      // 3. Dropdown Tujuan Import Excel (Latihan + semua pasangan Mapel - Jenis Penilaian)
+      const importTargets = mapels.filter(m => !String(m.kode || "").toUpperCase().startsWith("PAKET_"));
       const selImport = document.getElementById("importMapelSelect");
       const prevImport = selImport.value;
-      selImport.innerHTML = nonPaketMapels.map(m => `<option value="${m.nama}">${m.nama} (${m.kode})</option>`).join("");
-      if (prevImport && nonPaketMapels.some(m => m.nama === prevImport)) selImport.value = prevImport;
+      selImport.innerHTML = importTargets.map(m => {
+        const lbl = m.labelLengkap || (m.jenisPenilaian ? `${m.nama} - ${m.jenisPenilaian}` : m.nama);
+        const val = JSON.stringify({ mapel: m.nama, jenisPenilaian: m.jenisPenilaian || "" });
+        return `<option value='${val.replace(/'/g, "&#39;")}'>${lbl}</option>`;
+      }).join("");
+      if (prevImport && Array.from(selImport.options).some(o => o.value === prevImport)) {
+        selImport.value = prevImport;
+      }
 
-      // 3. Dropdown Filter Mapel di Rekap & Bank Soal
+      // 4. Dropdown Filter Mapel di Rekap & Bank Soal
+      const allLabels = [...new Set(
+        importTargets.map(m => m.labelLengkap || (m.jenisPenilaian ? `${m.nama} - ${m.jenisPenilaian}` : m.nama))
+      )];
+
       const filterMapel = document.getElementById("filterMapelGuru");
       const prevFilterMapel = filterMapel.value;
-      filterMapel.innerHTML = `<option value="ALL">Semua Mata Pelajaran</option>` +
-        nonPaketMapels.map(m => `<option value="${m.nama}">${m.nama}</option>`).join("");
+      filterMapel.innerHTML = `<option value="ALL">Semua Mata Pelajaran / Penilaian</option>` +
+        allLabels.map(lbl => `<option value="${lbl}">${lbl}</option>`).join("");
       if (prevFilterMapel) filterMapel.value = prevFilterMapel;
 
       const filterBank = document.getElementById("filterBankMapel");
       const prevFilterBank = filterBank.value;
-      filterBank.innerHTML = `<option value="ALL">Semua Mata Pelajaran</option>` +
-        nonPaketMapels.map(m => `<option value="${m.nama}">${m.nama}</option>`).join("");
+      filterBank.innerHTML = `<option value="ALL">Semua Mata Pelajaran / Penilaian</option>` +
+        allLabels.map(lbl => `<option value="${lbl}">${lbl}</option>`).join("");
       if (prevFilterBank) filterBank.value = prevFilterBank;
 
-      // 4. Dropdown Filter Kelas di Rekap
+      // 5. Dropdown Filter Kelas di Rekap & Cetak Kartu
       const kelasSel = document.getElementById("filterKelasGuru");
       const prevKelas = kelasSel.value;
-      const uniqueKelas = [...new Set(teacherDataCache.rekap.map(r => String(r.kelas || "").trim()).filter(Boolean))].sort();
+      const uniqueKelasRekap = [...new Set(teacherDataCache.rekap.map(r => String(r.kelas || "").trim()).filter(Boolean))].sort();
       kelasSel.innerHTML = `<option value="ALL">Semua Kelas</option>` +
-        uniqueKelas.map(k => `<option value="${k}">${k}</option>`).join("");
-      if (prevKelas && (prevKelas === "ALL" || uniqueKelas.includes(prevKelas))) kelasSel.value = prevKelas;
+        uniqueKelasRekap.map(k => `<option value="${k}">${k}</option>`).join("");
+      if (prevKelas && (prevKelas === "ALL" || uniqueKelasRekap.includes(prevKelas))) kelasSel.value = prevKelas;
+
+      const kartuKelasSel = document.getElementById("filterKartuKelas");
+      if (kartuKelasSel) {
+        const prevKK = kartuKelasSel.value;
+        const uniqueKelasSiswa = [...new Set(teacherDataCache.siswaList.map(s => String(s.kelas || "").trim()).filter(Boolean))].sort();
+        kartuKelasSel.innerHTML = `<option value="ALL">Semua Kelas</option>` +
+          uniqueKelasSiswa.map(k => `<option value="${k}">${k}</option>`).join("");
+        if (prevKK && (prevKK === "ALL" || uniqueKelasSiswa.includes(prevKK))) kartuKelasSel.value = prevKK;
+      }
+
+      // 6. Dropdown Target pada Modal Editor Soal Manual
+      const editTargetSel = document.getElementById("editSoalTargetSelect");
+      if (editTargetSel) {
+        editTargetSel.innerHTML = importTargets.map(m => {
+          const lbl = m.labelLengkap || (m.jenisPenilaian ? `${m.nama} - ${m.jenisPenilaian}` : m.nama);
+          const val = JSON.stringify({ mapel: m.nama, jenisPenilaian: m.jenisPenilaian || "" });
+          return `<option value='${val.replace(/'/g, "&#39;")}'>${lbl}</option>`;
+        }).join("");
+      }
+
+      // 7. Render daftar Accordion Jenis Penilaian dengan ikon hapus & modal konfirmasi
+      renderRegisteredJenisAccordion();
+    }
+
+    let expandedJenisGroups = new Set();
+    let jenisAccordionInitialized = false;
+    let jenisSingleLookup = {};
+    let jenisGroupLookup = {};
+    let pendingDeleteJenisState = null;
+
+    function escapeHtmlAttr(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getQuestionCountForLabel(labelLengkap) {
+      const counts = teacherDataCache.soalCounts || {};
+      if (typeof counts[labelLengkap] === "number") return counts[labelLengkap];
+      const target = String(labelLengkap || "").trim().toLowerCase();
+      return (teacherDataCache.soalBrief || []).filter(s =>
+        String(s.labelLengkap || s.mapel || "").trim().toLowerCase() === target
+      ).length;
+    }
+
+    function toggleJenisGroup(groupKey) {
+      if (expandedJenisGroups.has(groupKey)) {
+        expandedJenisGroups.delete(groupKey);
+      } else {
+        expandedJenisGroups.add(groupKey);
+      }
+      renderRegisteredJenisAccordion();
+    }
+
+    function toggleAllJenisGroups(openAll) {
+      if (openAll) {
+        Object.keys(jenisGroupLookup).forEach(k => expandedJenisGroups.add(k));
+      } else {
+        expandedJenisGroups.clear();
+      }
+      renderRegisteredJenisAccordion();
+    }
+
+    function renderRegisteredJenisAccordion() {
+      const container = document.getElementById("registeredJenisAccordion");
+      if (!container) return;
+
+      const customList = (teacherDataCache.daftarMapel || []).filter(m =>
+        m.tipeSesi !== "LATIHAN" &&
+        !String(m.kode || "").toUpperCase().startsWith("PAKET_") &&
+        String(m.jenisPenilaian || "").trim() !== ""
+      );
+
+      if (customList.length === 0) {
+        container.innerHTML = `<div style="background:white; border:1px dashed #cbd5e1; border-radius:8px; padding:12px; font-size:12.5px; color:#64748b; text-align:center;">Belum ada jenis penilaian khusus terdaftar.</div>`;
+        return;
+      }
+
+      // Kelompokkan berdasarkan Nama Jenis Penilaian
+      const groupsMap = new Map();
+      customList.forEach(m => {
+        const jName = String(m.jenisPenilaian || "").trim();
+        if (!groupsMap.has(jName)) groupsMap.set(jName, []);
+        groupsMap.get(jName).push({
+          ...m,
+          jmlSoal: getQuestionCountForLabel(m.labelLengkap)
+        });
+      });
+
+      // Urutkan kelompok terbaru di paling atas
+      const allGroups = Array.from(groupsMap.entries()).reverse().map(([name, items]) => ({
+        name,
+        items,
+        totalSoal: items.reduce((acc, it) => acc + it.jmlSoal, 0)
+      }));
+
+      // Buka kelompok terbaru secara bawaan saat pertama kali dimuat
+      if (!jenisAccordionInitialized && allGroups.length > 0) {
+        expandedJenisGroups.add(allGroups[0].name);
+        jenisAccordionInitialized = true;
+      }
+
+      // Simpan lookup aman agar terhindar dari masalah tanda kutip pada atribut onclick
+      jenisSingleLookup = {};
+      jenisGroupLookup = {};
+      allGroups.forEach((grp, gIdx) => {
+        const gKey = "GRP_" + gIdx;
+        jenisGroupLookup[gKey] = grp;
+        grp.gKey = gKey;
+        grp.items.forEach((it, iIdx) => {
+          const iKey = `ITM_${gIdx}_${iIdx}`;
+          jenisSingleLookup[iKey] = it;
+          it.iKey = iKey;
+        });
+      });
+
+      const query = String((document.getElementById("searchJenisInput") || {}).value || "").trim().toLowerCase();
+
+      const filteredGroups = allGroups.map(grp => {
+        if (!query) return { ...grp, visibleItems: grp.items, forceOpen: false };
+        const groupMatch = grp.name.toLowerCase().includes(query);
+        const matchingItems = groupMatch
+          ? grp.items
+          : grp.items.filter(it => String(it.nama || "").toLowerCase().includes(query));
+        return {
+          ...grp,
+          visibleItems: matchingItems,
+          forceOpen: matchingItems.length > 0
+        };
+      }).filter(grp => grp.visibleItems.length > 0);
+
+      if (filteredGroups.length === 0) {
+        container.innerHTML = `<div style="background:white; border:1px dashed #cbd5e1; border-radius:8px; padding:12px; font-size:12.5px; color:#64748b; text-align:center;">Tidak ditemukan mata pelajaran atau jenis penilaian yang cocok dengan "<strong>${escapeHtmlAttr(query)}</strong>".</div>`;
+        return;
+      }
+
+      const trashSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
+
+      container.innerHTML = filteredGroups.map(grp => {
+        const isOpen = grp.forceOpen || expandedJenisGroups.has(grp.name);
+        const safeNameAttr = escapeHtmlAttr(grp.name);
+        return `
+          <div class="jenis-acc-item ${isOpen ? "open" : ""}">
+            <div class="jenis-acc-header" onclick="toggleJenisGroup('${safeNameAttr}')">
+              <div class="jenis-acc-left">
+                <span class="jenis-acc-chevron">▶</span>
+                <span class="jenis-acc-title">${escapeHtmlAttr(grp.name)}</span>
+                <span class="jenis-badge-count">${grp.items.length} Mapel</span>
+                <span class="jenis-badge-soal ${grp.totalSoal === 0 ? "empty" : ""}">${grp.totalSoal} Soal</span>
+              </div>
+              <button type="button" class="btn-delete-group"
+                onclick="event.stopPropagation(); openDeleteJenisGroupModal('${grp.gKey}')"
+                title="Hapus seluruh paket ${safeNameAttr}">
+                ${trashSvg}
+                <span>Hapus Paket</span>
+              </button>
+            </div>
+            <div class="jenis-acc-body">
+              <div class="jenis-mapel-grid">
+                ${grp.visibleItems.map(it => `
+                  <div class="jenis-mapel-card">
+                    <div class="jenis-mapel-info">
+                      <div class="jenis-mapel-name">${escapeHtmlAttr(it.nama)}</div>
+                      <div class="jenis-mapel-meta">⏱️ ${it.durasi} menit &bull; 📝 ${it.jmlSoal} soal</div>
+                    </div>
+                    <button type="button" class="btn-trash-mapel"
+                      onclick="openDeleteJenisSingleModal('${it.iKey}')"
+                      title="Hapus ${escapeHtmlAttr(it.labelLengkap)}">
+                      ${trashSvg}
+                    </button>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openDeleteJenisSingleModal(iKey) {
+      const item = jenisSingleLookup[iKey];
+      if (!item) return;
+
+      const jmlSoal = item.jmlSoal || 0;
+      pendingDeleteJenisState = {
+        mode: "SINGLE",
+        items: [item],
+        totalSoal: jmlSoal,
+        title: item.labelLengkap
+      };
+
+      document.getElementById("delJenisModalTitle").textContent = "Konfirmasi Hapus Mata Pelajaran";
+      document.getElementById("delJenisTargetName").textContent = `${item.labelLengkap} (${item.durasi} menit)`;
+
+      const impactBox = document.getElementById("delJenisImpactBox");
+      const checkWrap = document.getElementById("delJenisCheckWrap");
+      const chk = document.getElementById("chkConfirmDeleteJenis");
+      const btnConfirm = document.getElementById("btnConfirmDeleteJenis");
+
+      chk.checked = false;
+      if (jmlSoal > 0) {
+        impactBox.style.background = "#fef2f2";
+        impactBox.style.border = "1px solid #fecaca";
+        impactBox.style.color = "#991b1b";
+        impactBox.innerHTML = `⚠️ <strong>Perhatian:</strong> Terdapat <strong>${jmlSoal} butir soal</strong> pada paket ini yang akan <strong>ikut terhapus permanen</strong> dari Bank Soal.`;
+        checkWrap.classList.remove("hidden");
+        btnConfirm.disabled = true;
+      } else {
+        impactBox.style.background = "#f0fdf4";
+        impactBox.style.border = "1px solid #bbf7d0";
+        impactBox.style.color = "#166534";
+        impactBox.innerHTML = `✓ Paket ini belum memiliki butir soal (<strong>0 soal</strong>), sehingga aman untuk dihapus tanpa menghilangkan bank soal.`;
+        checkWrap.classList.add("hidden");
+        btnConfirm.disabled = false;
+      }
+
+      btnConfirm.textContent = "🗑️ Ya, Hapus";
+      document.getElementById("deleteJenisConfirmModal").classList.remove("hidden");
+    }
+
+    function openDeleteJenisGroupModal(gKey) {
+      const grp = jenisGroupLookup[gKey];
+      if (!grp || !grp.items || grp.items.length === 0) return;
+
+      const totalSoal = grp.items.reduce((acc, it) => acc + (it.jmlSoal || 0), 0);
+      pendingDeleteJenisState = {
+        mode: "GROUP",
+        items: grp.items,
+        totalSoal: totalSoal,
+        title: grp.name
+      };
+
+      document.getElementById("delJenisModalTitle").textContent = "Konfirmasi Hapus Satu Paket Penilaian";
+      document.getElementById("delJenisTargetName").textContent = `Paket "${grp.name}" (${grp.items.length} Mata Pelajaran)`;
+
+      const impactBox = document.getElementById("delJenisImpactBox");
+      const checkWrap = document.getElementById("delJenisCheckWrap");
+      const chk = document.getElementById("chkConfirmDeleteJenis");
+      const btnConfirm = document.getElementById("btnConfirmDeleteJenis");
+
+      chk.checked = false;
+      impactBox.style.background = "#fef2f2";
+      impactBox.style.border = "1px solid #fecaca";
+      impactBox.style.color = "#991b1b";
+      impactBox.innerHTML = totalSoal > 0
+        ? `⚠️ <strong>Peringatan Penghapusan Massal:</strong> Seluruh <strong>${grp.items.length} mata pelajaran</strong> dalam paket <strong>${escapeHtmlAttr(grp.name)}</strong> beserta total <strong>${totalSoal} butir soal</strong> di dalamnya akan dihapus permanen.`
+        : `⚠️ Seluruh <strong>${grp.items.length} mata pelajaran</strong> dalam paket <strong>${escapeHtmlAttr(grp.name)}</strong> akan dihapus dari daftar (0 soal terhubung).`;
+
+      checkWrap.classList.remove("hidden");
+      btnConfirm.disabled = true;
+      btnConfirm.textContent = `🗑️ Ya, Hapus ${grp.items.length} Mapel`;
+      document.getElementById("deleteJenisConfirmModal").classList.remove("hidden");
+    }
+
+    function toggleDeleteJenisConfirmBtn() {
+      const chk = document.getElementById("chkConfirmDeleteJenis");
+      document.getElementById("btnConfirmDeleteJenis").disabled = !chk.checked;
+    }
+
+    function closeDeleteJenisModal() {
+      pendingDeleteJenisState = null;
+      document.getElementById("deleteJenisConfirmModal").classList.add("hidden");
+    }
+
+    async function executeConfirmedDeleteJenis() {
+      if (!pendingDeleteJenisState || !pendingDeleteJenisState.items.length) return;
+
+      const items = pendingDeleteJenisState.items;
+      const btnConfirm = document.getElementById("btnConfirmDeleteJenis");
+      const btnCancel = document.getElementById("btnCancelDeleteJenis");
+      btnConfirm.disabled = true;
+      btnCancel.disabled = true;
+
+      let successCount = 0;
+      let lastError = "";
+
+      try {
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i];
+          btnConfirm.textContent = items.length > 1
+            ? `Menghapus (${i + 1}/${items.length})...`
+            : "Menghapus...";
+
+          const res = await apiGet({
+            action: "deleteJenisPenilaian",
+            username: teacherCreds.username,
+            password: teacherCreds.password,
+            kode: it.kode,
+            hapusSoal: (it.jmlSoal || 0) > 0 ? "1" : "0"
+          });
+
+          if (res.status === "success") {
+            successCount++;
+          } else {
+            lastError = res.message || `Gagal menghapus ${it.labelLengkap}`;
+          }
+        }
+
+        const deletedTitle = pendingDeleteJenisState.title;
+        closeDeleteJenisModal();
+
+        if (successCount > 0) {
+          alert(
+            items.length > 1
+              ? `✅ Berhasil menghapus ${successCount} dari ${items.length} mata pelajaran pada paket "${deletedTitle}".`
+              : `✅ Berhasil menghapus "${deletedTitle}".`
+          );
+          await loadTeacherRekap();
+        } else {
+          alert(lastError || "Gagal menghapus jenis penilaian.");
+        }
+      } catch (err) {
+        alert("Kesalahan koneksi: " + err.message);
+      } finally {
+        btnConfirm.disabled = false;
+        btnCancel.disabled = false;
+      }
+    }
+
+    async function submitNewJenisPenilaian() {
+      const namaMapel = document.getElementById("newJenisMapelSelect").value;
+      const jenisPenilaian = document.getElementById("newJenisNamaInput").value.trim();
+      const durasiMenit = parseInt(document.getElementById("newJenisDurasiInput").value, 10) || 60;
+
+      if (!namaMapel || !jenisPenilaian) {
+        alert("Pilih Mata Pelajaran dan isi Nama Jenis Penilaian terlebih dahulu (contoh: Penilaian TP 1).");
+        document.getElementById("newJenisNamaInput").focus();
+        return;
+      }
+
+      const btn = document.getElementById("btnAddJenisPenilaian");
+      btn.disabled = true;
+
+      try {
+        if (namaMapel === "__ALL__") {
+          const mapels = teacherDataCache.daftarMapel || [];
+          const baseMapelNames = [...new Set(
+            mapels
+              .filter(m => m.tipeSesi !== "LATIHAN" && !String(m.kode || "").toUpperCase().startsWith("PAKET_"))
+              .map(m => m.nama)
+              .filter(Boolean)
+          )];
+
+          const existingForJenis = new Set(
+            mapels
+              .filter(m => String(m.jenisPenilaian || "").trim().toLowerCase() === jenisPenilaian.toLowerCase())
+              .map(m => String(m.nama || "").trim().toLowerCase())
+          );
+
+          const targetsToCreate = baseMapelNames.filter(nm => !existingForJenis.has(nm.toLowerCase()));
+          if (targetsToCreate.length === 0) {
+            alert(`Semua mata pelajaran sudah terdaftar pada jenis penilaian "${jenisPenilaian}".`);
+            return;
+          }
+
+          let addedCount = 0;
+          for (let i = 0; i < targetsToCreate.length; i++) {
+            btn.textContent = `Menambahkan (${i + 1}/${targetsToCreate.length})...`;
+            const res = await apiGet({
+              action: "addJenisPenilaian",
+              username: teacherCreds.username,
+              password: teacherCreds.password,
+              namaMapel: targetsToCreate[i],
+              jenisPenilaian: jenisPenilaian,
+              durasiMenit: String(durasiMenit)
+            });
+            if (res.status === "success") addedCount++;
+          }
+
+          expandedJenisGroups.add(jenisPenilaian);
+          document.getElementById("newJenisNamaInput").value = "";
+          alert(`✅ Berhasil menambahkan ${addedCount} mata pelajaran untuk "${jenisPenilaian}" (${durasiMenit} menit).`);
+          await loadTeacherRekap();
+        } else {
+          btn.textContent = "Menambahkan...";
+          const res = await apiGet({
+            action: "addJenisPenilaian",
+            username: teacherCreds.username,
+            password: teacherCreds.password,
+            namaMapel: namaMapel,
+            jenisPenilaian: jenisPenilaian,
+            durasiMenit: String(durasiMenit)
+          });
+
+          if (res.status === "success") {
+            expandedJenisGroups.add(jenisPenilaian);
+            alert("✅ " + res.message);
+            document.getElementById("newJenisNamaInput").value = "";
+            await loadTeacherRekap();
+          } else {
+            alert(res.message || "Gagal menambahkan jenis penilaian.");
+          }
+        }
+      } catch (err) {
+        alert("Kesalahan koneksi: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "+ Tambahkan ke Daftar";
+      }
+    }
+
+    function renderKartuPesertaGrid() {
+      const grid = document.getElementById("kartuPesertaGrid");
+      if (!grid) return;
+
+      const fKelas = String(document.getElementById("filterKartuKelas").value || "ALL").trim().toLowerCase();
+      const qSearch = String(document.getElementById("searchKartuSiswa").value || "").trim().toLowerCase();
+      const namaUjian = teacherDataCache.info.namaUjian || "ASESMEN BERBASIS KOMPUTER (CBT)";
+
+      const list = (teacherDataCache.siswaList || []).filter(s => {
+        const okKelas = (fKelas === "all") || (String(s.kelas || "").trim().toLowerCase() === fKelas);
+        const okSearch = !qSearch ||
+          String(s.namaLengkap || "").toLowerCase().includes(qSearch) ||
+          String(s.noPeserta || "").toLowerCase().includes(qSearch) ||
+          String(s.username || "").toLowerCase().includes(qSearch);
+        return okKelas && okSearch;
+      });
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:24px; color:#64748b;">Tidak ada data peserta yang sesuai filter.</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(s => `
+        <div class="participant-card-item">
+          <div class="pcard-header">
+            <div class="pcard-logo">CBT</div>
+            <div>
+              <div class="pcard-school">SD NEGERI 2 GUNTUNG MANGGIS</div>
+              <div class="pcard-title">KARTU PESERTA — ${namaUjian.toUpperCase()}</div>
+            </div>
+          </div>
+          <table class="pcard-table">
+            <tr>
+              <td class="lbl">No. Peserta</td>
+              <td>: <strong>${s.noPeserta || "-"}</strong> &nbsp;|&nbsp; Kelas: <strong>${s.kelas || "-"}</strong></td>
+            </tr>
+            <tr>
+              <td class="lbl">Nama Peserta</td>
+              <td>: <strong>${(s.namaLengkap || "-").toUpperCase()}</strong></td>
+            </tr>
+            <tr>
+              <td class="lbl">Username</td>
+              <td>: <span class="pcard-cred">${s.username}</span></td>
+            </tr>
+            <tr>
+              <td class="lbl">Password</td>
+              <td>: <span class="pcard-cred">${s.password}</span></td>
+            </tr>
+          </table>
+          <div class="pcard-footer">
+            <span>Simpan kartu ini selama ujian berlangsung</span>
+            <span style="font-weight:700; color:#1e293b;">Proktor SDN 2 GTM</span>
+          </div>
+        </div>
+      `).join("");
     }
 
     function generateRandomTokenField() {
@@ -3079,8 +4085,9 @@
         : `Sempurna! Seluruh ${validCount} butir soal valid dan siap disimpan ke database.`;
       banner.classList.remove("hidden");
 
+      const selOptText = document.getElementById("importMapelSelect").selectedOptions[0]?.text || "";
       document.getElementById("importSummaryText").textContent =
-        `Target: ${document.getElementById("importMapelSelect").value} • Valid: ${validCount} soal`;
+        `Target: ${selOptText} • Valid: ${validCount} soal`;
       btnSubmit.disabled = validCount === 0;
       actionRow.classList.remove("hidden");
       previewContainer.classList.remove("hidden");
@@ -3136,12 +4143,19 @@
       const validQuestions = parsedExcelRows.filter(r => r.isValid).map(r => r.payloadItem);
       if (validQuestions.length === 0) return;
 
-      const targetMapel = document.getElementById("importMapelSelect").value;
+      const rawTarget = document.getElementById("importMapelSelect").value;
+      let parsedTarget = { mapel: rawTarget, jenisPenilaian: "" };
+      try {
+        parsedTarget = JSON.parse(rawTarget);
+      } catch (e) {}
+      const targetLabel = parsedTarget.jenisPenilaian
+        ? `${parsedTarget.mapel} - ${parsedTarget.jenisPenilaian}`
+        : parsedTarget.mapel;
       const mode = document.getElementById("importModeSelect").value;
 
       if (mode === "REPLACE") {
         const ok = confirm(
-          `PERHATIAN: Mode "Timpa Soal Lama" akan MENGHAPUS semua soal lama pada mata pelajaran "${targetMapel}" dan menggantinya dengan ${validQuestions.length} soal baru ini.\n\nLanjutkan?`
+          `PERHATIAN: Mode "Timpa Soal Lama" akan MENGHAPUS semua soal lama pada "${targetLabel}" dan menggantinya dengan ${validQuestions.length} soal baru ini.\n\nLanjutkan?`
         );
         if (!ok) return;
       }
@@ -3155,7 +4169,8 @@
           action: "importSoal",
           username: teacherCreds.username,
           password: teacherCreds.password,
-          mapel: targetMapel,
+          mapel: parsedTarget.mapel,
+          jenisPenilaian: parsedTarget.jenisPenilaian,
           mode: mode,
           questions: validQuestions
         });
@@ -3180,15 +4195,18 @@
     // TAB 3 PROKTOR: RINGKASAN BANK SOAL & UPLOAD GAMBAR KE DRIVE
     // =========================================================================
     function renderBankSoalOverview() {
-      const nonPaketMapels = teacherDataCache.daftarMapel.filter(m => m.tipeSesi !== "PAKET");
-      const counts = teacherDataCache.soalCounts || {};
+      const singleTargets = teacherDataCache.daftarMapel.filter(m =>
+        !String(m.kode || "").toUpperCase().startsWith("PAKET_")
+      );
+      const briefList = teacherDataCache.soalBrief || [];
 
       const grid = document.getElementById("mapelCountsGrid");
-      grid.innerHTML = nonPaketMapels.map(m => {
-        const c = counts[m.nama] || 0;
+      grid.innerHTML = singleTargets.map(m => {
+        const lbl = m.labelLengkap || (m.jenisPenilaian ? `${m.nama} - ${m.jenisPenilaian}` : m.nama);
+        const c = briefList.filter(s => String(s.labelLengkap || s.mapel || "").toLowerCase() === lbl.toLowerCase()).length;
         return `
           <div class="mapel-count-card">
-            <div class="m-name">${m.nama}</div>
+            <div class="m-name">${lbl}</div>
             <div class="m-num ${c === 0 ? "zero" : ""}">${c} <span style="font-size:12px; font-weight:500;">soal</span></div>
           </div>
         `;
@@ -3199,35 +4217,240 @@
 
     function renderBankSoalTable() {
       const filterMapel = String(document.getElementById("filterBankMapel").value || "ALL").toLowerCase();
-      const list = (teacherDataCache.soalBrief || []).filter(s =>
-        filterMapel === "all" || String(s.mapel || "").toLowerCase() === filterMapel
-      );
+      const list = (teacherDataCache.soalBrief || []).filter(s => {
+        const sLbl = String(s.labelLengkap || s.mapel || "").toLowerCase();
+        return filterMapel === "all" || sLbl === filterMapel;
+      });
 
       const tbody = document.getElementById("bankSoalTableBody");
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Belum ada soal untuk mata pelajaran ini.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Belum ada soal untuk mata pelajaran / penilaian ini.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = list.map(s => `
         <tr>
           <td><strong>${s.id}</strong></td>
-          <td>${s.mapel}</td>
+          <td>${s.labelLengkap || s.mapel}</td>
           <td>${s.tipe}</td>
           <td>${s.pertanyaan}...</td>
           <td>
             ${s.hasGambar
-              ? `<span style="color:#166534; font-weight:700;">✔ Ada Gambar</span>`
+              ? `<span style="color:#166534; font-weight:700;">✔ Ada</span>`
               : `<span style="color:#64748b;">Tidak ada</span>`}
           </td>
           <td>
-            <button type="button" class="btn" style="background:#e0f2fe; color:#0369a1; padding:5px 10px; font-size:12px;"
-              onclick="triggerUploadSoalImage('${s.id}')">
-              🖼️ ${s.hasGambar ? "Ganti Gambar" : "Upload Gambar"}
-            </button>
+            <div style="display:flex; flex-wrap:wrap; gap:4px;">
+              <button type="button" class="btn" style="background:#fef3c7; color:#92400e; padding:4px 8px; font-size:11.5px;"
+                onclick="openSoalEditorModal('${s.id}')" title="Edit teks, opsi, atau kunci soal">
+                ✏️ Edit
+              </button>
+              <button type="button" class="btn" style="background:#e0f2fe; color:#0369a1; padding:4px 8px; font-size:11.5px;"
+                onclick="triggerUploadSoalImage('${s.id}')" title="Unggah gambar dari komputer/HP">
+                🖼️ Gambar
+              </button>
+              <button type="button" class="btn" style="background:#fee2e2; color:#991b1b; padding:4px 8px; font-size:11.5px;"
+                onclick="deleteSoalItem('${s.id}')" title="Hapus soal ini">
+                🗑️
+              </button>
+            </div>
           </td>
         </tr>
       `).join("");
+    }
+
+    function htmlToEditableLines(str) {
+      if (!str) return "";
+      return String(str).replace(/<br\s*\/?>/gi, "\n");
+    }
+
+    function editableLinesToHtml(str) {
+      if (!str) return "";
+      return String(str).replace(/\r\n/g, "\n").replace(/\n/g, "<br>");
+    }
+
+    function toggleSoalEditorFields() {
+      const tipe = document.getElementById("editSoalTipeSelect").value;
+      const opsiBlock = document.getElementById("editSoalOpsiBlock");
+      const katBlock = document.getElementById("editSoalKategoriBlock");
+      const hint = document.getElementById("editSoalKunciHint");
+
+      if (tipe === "PGK_KATEGORI") {
+        opsiBlock.classList.add("hidden");
+        katBlock.classList.remove("hidden");
+        hint.textContent = "PGK_KATEGORI: pisahkan B/S dengan koma (misal: B, S, B)";
+      } else {
+        opsiBlock.classList.remove("hidden");
+        katBlock.classList.add("hidden");
+        if (tipe === "PGK_MULTI") {
+          hint.textContent = "PGK_MULTI: pisahkan huruf dengan koma (misal: A, C)";
+        } else if (tipe === "SURVEI") {
+          hint.textContent = "SURVEI: ketik A (semua pilihan mendapat poin penuh)";
+        } else {
+          hint.textContent = "PG: ketik 1 huruf jawaban benar (misal: B)";
+        }
+      }
+    }
+
+    async function openSoalEditorModal(idSoal) {
+      const modal = document.getElementById("soalEditorModal");
+      const titleEl = document.getElementById("soalEditorTitle");
+      const subEl = document.getElementById("soalEditorSubtitle");
+      const targetSel = document.getElementById("editSoalTargetSelect");
+
+      if (!idSoal) {
+        // Mode Tambah Soal Baru
+        document.getElementById("editSoalMode").value = "CREATE";
+        document.getElementById("editSoalId").value = "";
+        titleEl.textContent = "Tambah Soal Baru Satuan";
+        subEl.textContent = "Nomor ID soal (misal: B.IND-31) akan dibuat otomatis oleh sistem.";
+
+        // Ikuti pilihan filter mapel yang sedang aktif jika bukan ALL
+        const activeFilter = document.getElementById("filterBankMapel").value;
+        if (activeFilter && activeFilter !== "ALL") {
+          const matchOpt = Array.from(targetSel.options).find(o => o.text === activeFilter);
+          if (matchOpt) targetSel.value = matchOpt.value;
+        }
+
+        document.getElementById("editSoalTipeSelect").value = "PG";
+        document.getElementById("editSoalWacana").value = "";
+        document.getElementById("editSoalPertanyaan").value = "";
+        document.getElementById("editSoalOpsiA").value = "";
+        document.getElementById("editSoalOpsiB").value = "";
+        document.getElementById("editSoalOpsiC").value = "";
+        document.getElementById("editSoalOpsiD").value = "";
+        document.getElementById("editSoalPernyataan1").value = "";
+        document.getElementById("editSoalPernyataan2").value = "";
+        document.getElementById("editSoalPernyataan3").value = "";
+        document.getElementById("editSoalKunci").value = "";
+        document.getElementById("editSoalGambar").value = "";
+        document.getElementById("editSoalPembahasan").value = "";
+
+        toggleSoalEditorFields();
+        modal.classList.remove("hidden");
+        return;
+      }
+
+      // Mode Edit Soal Lama -> Ambil detail lengkap soal dari server
+      try {
+        const res = await apiGet({
+          action: "getSoalDetail",
+          username: teacherCreds.username,
+          password: teacherCreds.password,
+          idSoal: idSoal
+        });
+
+        if (res.status !== "success" || !res.soal) {
+          alert(res.message || "Gagal memuat detail soal.");
+          return;
+        }
+
+        const q = res.soal;
+        document.getElementById("editSoalMode").value = "UPDATE";
+        document.getElementById("editSoalId").value = q.id;
+        titleEl.textContent = "Edit Soal: " + q.id;
+        subEl.textContent = "Perbarui isi soal, pilihan jawaban, atau kunci lalu klik Simpan Soal.";
+
+        const fullLbl = q.jenisPenilaian ? `${q.mapel} - ${q.jenisPenilaian}` : q.mapel;
+        const matchOpt = Array.from(targetSel.options).find(o => o.text.toLowerCase() === fullLbl.toLowerCase());
+        if (matchOpt) targetSel.value = matchOpt.value;
+
+        document.getElementById("editSoalTipeSelect").value = q.tipe || "PG";
+        document.getElementById("editSoalWacana").value = htmlToEditableLines(q.wacana);
+        document.getElementById("editSoalPertanyaan").value = htmlToEditableLines(q.pertanyaan);
+        document.getElementById("editSoalOpsiA").value = q.opsiA || "";
+        document.getElementById("editSoalOpsiB").value = q.opsiB || "";
+        document.getElementById("editSoalOpsiC").value = q.opsiC || "";
+        document.getElementById("editSoalOpsiD").value = q.opsiD || "";
+        document.getElementById("editSoalPernyataan1").value = q.pernyataan1 || "";
+        document.getElementById("editSoalPernyataan2").value = q.pernyataan2 || "";
+        document.getElementById("editSoalPernyataan3").value = q.pernyataan3 || "";
+        document.getElementById("editSoalKunci").value = q.kunci || "";
+        document.getElementById("editSoalGambar").value = q.gambar || "";
+        document.getElementById("editSoalPembahasan").value = htmlToEditableLines(q.pembahasan);
+
+        toggleSoalEditorFields();
+        modal.classList.remove("hidden");
+      } catch (err) {
+        alert("Gagal mengambil data soal: " + err.message);
+      }
+    }
+
+    function closeSoalEditorModal() {
+      document.getElementById("soalEditorModal").classList.add("hidden");
+    }
+
+    async function submitSoalEditorForm(event) {
+      event.preventDefault();
+      const rawTarget = document.getElementById("editSoalTargetSelect").value;
+      let parsedTarget = { mapel: rawTarget, jenisPenilaian: "" };
+      try {
+        parsedTarget = JSON.parse(rawTarget);
+      } catch (e) {}
+
+      const btn = document.getElementById("btnSaveSoalEditor");
+      btn.disabled = true;
+      btn.textContent = "Menyimpan...";
+
+      try {
+        const res = await apiPost({
+          action: "saveOrUpdateSoal",
+          username: teacherCreds.username,
+          password: teacherCreds.password,
+          mode: document.getElementById("editSoalMode").value,
+          idSoal: document.getElementById("editSoalId").value,
+          mapel: parsedTarget.mapel,
+          jenisPenilaian: parsedTarget.jenisPenilaian,
+          tipe: document.getElementById("editSoalTipeSelect").value,
+          wacana: editableLinesToHtml(document.getElementById("editSoalWacana").value),
+          pertanyaan: editableLinesToHtml(document.getElementById("editSoalPertanyaan").value),
+          opsiA: document.getElementById("editSoalOpsiA").value.trim(),
+          opsiB: document.getElementById("editSoalOpsiB").value.trim(),
+          opsiC: document.getElementById("editSoalOpsiC").value.trim(),
+          opsiD: document.getElementById("editSoalOpsiD").value.trim(),
+          pernyataan1: document.getElementById("editSoalPernyataan1").value.trim(),
+          pernyataan2: document.getElementById("editSoalPernyataan2").value.trim(),
+          pernyataan3: document.getElementById("editSoalPernyataan3").value.trim(),
+          kunci: document.getElementById("editSoalKunci").value.trim().toUpperCase(),
+          gambar: document.getElementById("editSoalGambar").value.trim(),
+          pembahasan: editableLinesToHtml(document.getElementById("editSoalPembahasan").value)
+        });
+
+        if (res.status === "success") {
+          alert("✅ " + res.message);
+          closeSoalEditorModal();
+          await loadTeacherRekap();
+        } else {
+          alert(res.message || "Gagal menyimpan soal.");
+        }
+      } catch (err) {
+        alert("Kesalahan koneksi: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "💾 Simpan Soal";
+      }
+    }
+
+    async function deleteSoalItem(idSoal) {
+      if (!confirm(`Yakin ingin menghapus soal "${idSoal}" secara permanen dari Bank Soal?`)) {
+        return;
+      }
+      try {
+        const res = await apiGet({
+          action: "deleteSoal",
+          username: teacherCreds.username,
+          password: teacherCreds.password,
+          idSoal: idSoal
+        });
+        if (res.status === "success") {
+          alert("✅ " + res.message);
+          await loadTeacherRekap();
+        } else {
+          alert(res.message || "Gagal menghapus soal.");
+        }
+      } catch (err) {
+        alert("Kesalahan koneksi: " + err.message);
+      }
     }
 
     function triggerUploadSoalImage(idSoal) {
