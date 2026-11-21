@@ -2583,8 +2583,8 @@
       const matchSesi = Array.from(selSesi.options).find(o => o.value.toLowerCase() === sesiAktif.toLowerCase());
       if (matchSesi) selSesi.value = matchSesi.value;
 
-      // 2. Dropdown Import Mapel (hanya mapel non-paket)
-      const nonPaketMapels = mapels.filter(m => m.tipeSesi !== "PAKET");
+      // 2. Dropdown Mapel (tampilkan semua mapel satuan termasuk yang berawalan Latihan, kecuali paket gabungan seperti PAKET_HARI_1)
+      const nonPaketMapels = mapels.filter(m => !String(m.kode || "").toUpperCase().startsWith("PAKET_"));
       const selImport = document.getElementById("importMapelSelect");
       const prevImport = selImport.value;
       selImport.innerHTML = nonPaketMapels.map(m => `<option value="${m.nama}">${m.nama} (${m.kode})</option>`).join("");
