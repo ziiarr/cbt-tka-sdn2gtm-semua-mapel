@@ -894,6 +894,112 @@
       flex-shrink: 0;
       transition: background 0.15s, border-color 0.15s;
     }
+    /* MONITOR LIVE PESERTA & STATUS BADGES */
+    .monitor-live-box {
+      background: #ffffff;
+      border: 1.5px solid #93c5fd;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+    .monitor-live-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .live-pulse-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.22);
+      margin-right: 6px;
+    }
+    .monitor-mini-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .m-stat-pill {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .m-stat-pill .v { font-size: 17px; font-weight: 800; color: #1e293b; }
+    .m-stat-pill .l { font-size: 11px; color: #64748b; margin-top: 1px; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .st-belum { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+    .st-login { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .st-aktif { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .st-jeda { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+    .st-selesai { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .st-terkunci { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+    .viol-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .viol-0 { background: #f0fdf4; color: #166534; }
+    .viol-warn { background: #fef3c7; color: #92400e; }
+    .viol-lock { background: #fee2e2; color: #991b1b; }
+
+    .btn-reset-viol {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-reset-viol:hover:not(:disabled) {
+      background: #fef3c7;
+      border-color: #f59e0b;
+    }
+    .btn-reset-viol:disabled {
+      background: #f1f5f9;
+      color: #94a3b8;
+      border-color: #e2e8f0;
+      cursor: not-allowed;
+    }
+
+    /* REKAP RINGKAS DI MODAL PETA DAFTAR SOAL */
+    .review-map-summary {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
     .btn-trash-mapel:hover {
       background: #fee2e2;
       border-color: #f87171;
@@ -1359,6 +1465,72 @@
           </div>
         </div>
 
+        <!-- KARTU MONITOR STATUS PESERTA LIVE & RESET PELANGGARAN -->
+        <div class="monitor-live-box">
+          <div class="monitor-live-header">
+            <div>
+              <strong style="font-size:15.5px; color:var(--primary-dark); display:flex; align-items:center;">
+                <span class="live-pulse-dot"></span> Monitor Status Peserta Ujian (Live)
+              </strong>
+              <span style="font-size:12px; color:var(--text-muted);" id="monitorLiveSubtitle">
+                Menampilkan seluruh daftar siswa dari Akun_Siswa beserta status login, tahap subtes, &amp; pelanggaran.
+              </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <label style="font-size:12px; color:#334155; display:inline-flex; align-items:center; gap:5px; cursor:pointer; background:#f8fafc; padding:5px 9px; border-radius:6px; border:1px solid #cbd5e1;">
+                <input type="checkbox" id="chkAutoRefreshMonitor" checked onchange="toggleMonitorAutoRefresh()" />
+                Auto-Refresh (12 dtk)
+              </label>
+              <button type="button" class="btn btn-next" style="padding:6px 12px; font-size:12.5px;" onclick="refreshMonitorLiveOnly(true)">
+                ↻ Refresh Status
+              </button>
+            </div>
+          </div>
+
+          <div class="monitor-mini-stats">
+            <div class="m-stat-pill"><div class="v" id="monTotalSiswa">0</div><div class="l">Total Peserta</div></div>
+            <div class="m-stat-pill" style="border-color:#fde68a; background:#fffbeb;"><div class="v" style="color:#b45309;" id="monSedangAktif">0</div><div class="l">Aktif / Login</div></div>
+            <div class="m-stat-pill" style="border-color:#bbf7d0; background:#f0fdf4;"><div class="v" style="color:#166534;" id="monSelesai">0</div><div class="l">Selesai</div></div>
+            <div class="m-stat-pill" style="border-color:#fecaca; background:#fef2f2;"><div class="v" style="color:#991b1b;" id="monTerkunci">0</div><div class="l">Terkunci (3/3)</div></div>
+            <div class="m-stat-pill"><div class="v" style="color:#475569;" id="monBelumLogin">0</div><div class="l">Belum Login</div></div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <select id="filterMonKelas" class="form-control" style="width:auto; min-width:140px;" onchange="renderMonitorLiveTable()">
+              <option value="ALL">Semua Kelas</option>
+            </select>
+            <select id="filterMonStatus" class="form-control" style="width:auto; min-width:185px;" onchange="renderMonitorLiveTable()">
+              <option value="ALL">Semua Status Peserta</option>
+              <option value="AKTIF">Sedang Mengerjakan / Login</option>
+              <option value="PELANGGARAN">Ada Pelanggaran (1–2/3)</option>
+              <option value="TERKUNCI">Terkunci (3/3)</option>
+              <option value="SELESAI">Selesai Ujian</option>
+              <option value="BELUM_LOGIN">Belum Login</option>
+            </select>
+            <input type="text" id="searchMonSiswa" class="form-control" style="width:auto; min-width:210px;" placeholder="Cari nama / no. peserta..." oninput="renderMonitorLiveTable()" />
+          </div>
+
+          <div style="overflow-x:auto; max-height:360px; overflow-y:auto; border:1px solid #e2e8f0; border-radius:8px;">
+            <table class="data-table" style="margin:0;">
+              <thead style="position:sticky; top:0; z-index:2;">
+                <tr>
+                  <th style="width:85px;">No. Peserta</th>
+                  <th>Nama Siswa</th>
+                  <th style="width:80px;">Kelas</th>
+                  <th style="width:155px;">Status</th>
+                  <th>Tahap Subtes &amp; Posisi Soal</th>
+                  <th style="width:110px; text-align:center;">Pelanggaran</th>
+                  <th style="width:145px;">Aksi Proktor</th>
+                </tr>
+              </thead>
+              <tbody id="monitorLiveTableBody">
+                <tr><td colspan="7" style="text-align:center; color:#64748b;">Memuat data peserta...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3 style="font-size:16px; color:var(--primary-dark); margin-bottom:10px;">📊 Rekap Nilai Hasil Ujian (Sheet <code>Hasil_Ujian</code>)</h3>
         <div class="stats-row">
           <div class="stat-box"><div class="num" id="statNamaUjian" style="font-size:14px;">-</div><div class="lbl">Judul Ujian</div></div>
           <div class="stat-box"><div class="num" id="statSesi">-</div><div class="lbl">Sesi Aktif</div></div>
@@ -1510,12 +1682,72 @@
           </table>
         </div>
       </div>
-      <!-- TAB 4: CETAK KARTU PESERTA UJIAN -->
+      <!-- TAB 4: IMPORT IDENTITAS SISWA & CETAK KARTU PESERTA UJIAN -->
       <div id="proctorTabKartu" class="hidden">
+        <!-- PANEL IMPORT IDENTITAS SISWA VIA EXCEL -->
+        <div class="import-box no-print" style="margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+            <div>
+              <h3 style="font-size:16px; color:var(--primary-dark);">📥 Import Identitas Siswa dari Excel (.xlsx)</h3>
+              <p style="font-size:12.5px; color:#475569; margin-top:2px;">
+                Unggah data peserta didik ke sheet <code>Akun_Siswa</code> secara massal tanpa mengetik satu per satu di Google Sheets.
+              </p>
+            </div>
+            <button type="button" class="btn" style="background:#e0f2fe; color:#0369a1;" onclick="downloadSiswaTemplateExcel()">
+              📄 Unduh Template Excel Siswa (.xlsx)
+            </button>
+          </div>
+
+          <div class="import-grid-controls">
+            <div class="field-group">
+              <label for="importSiswaModeSelect">1. Mode Simpan ke <code>Akun_Siswa</code>:</label>
+              <select id="importSiswaModeSelect" class="form-control">
+                <option value="APPEND">Tambah / Perbarui Siswa (Cocokkan Username)</option>
+                <option value="REPLACE">Timpa Seluruh Data Akun_Siswa Lama</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="importSiswaExcelFile">2. Pilih File Excel Siswa (.xlsx / .xls):</label>
+              <input type="file" id="importSiswaExcelFile" accept=".xlsx,.xls" class="form-control" style="padding:6px;" onchange="handleSiswaExcelSelected(event)" />
+            </div>
+          </div>
+
+          <div id="importSiswaBanner" class="sync-status hidden" style="margin-top:8px;"></div>
+
+          <div id="importSiswaActionRow" class="hidden" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:12px;">
+            <span id="importSiswaSummaryText" style="font-size:13px; font-weight:700; color:#1e293b;"></span>
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="btn" style="background:#e2e8f0;" onclick="clearSiswaExcelPreview()">Batal / Reset</button>
+              <button type="button" id="btnSubmitImportSiswa" class="btn btn-finish" onclick="submitImportedStudents()">
+                ✔ Simpan Identitas Siswa ke Database
+              </button>
+            </div>
+          </div>
+
+          <div id="importSiswaPreviewWrap" class="hidden" style="margin-top:14px; overflow-x:auto; max-height:260px; overflow-y:auto; border:1px solid #cbd5e1; border-radius:8px; background:white;">
+            <table class="data-table" style="margin:0;">
+              <thead>
+                <tr>
+                  <th style="width:45px;">No</th>
+                  <th>No. Peserta</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Nama Lengkap</th>
+                  <th>L/P</th>
+                  <th>Kelas</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="importSiswaPreviewBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANEL FILTER & CETAK KARTU PESERTA -->
         <div class="settings-panel-box no-print" style="margin-bottom:14px;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
-              <h3 style="font-size:16px; color:var(--primary-dark);">Cetak Kartu Login Peserta Ujian</h3>
+              <h3 style="font-size:16px; color:var(--primary-dark);">🪪 Cetak Kartu Login Peserta Ujian</h3>
               <p style="font-size:12.5px; color:#475569; margin-top:2px;">
                 Data otomatis diambil dari sheet <code>Akun_Siswa</code>. Siap dicetak ukuran kertas A4/F4 (2 kolom per baris).
               </p>
@@ -1584,18 +1816,32 @@
     </div>
   </div>
 
-  <!-- MODAL DAFTAR SOAL -->
+  <!-- MODAL DAFTAR SOAL (NAVIGASI & REKAP SEBELUM KUMPULKAN) -->
   <div id="drawerModal" class="overlay hidden" onclick="if(event.target===this) toggleDrawer(false)">
-    <div class="modal-box" style="max-width:500px;">
+    <div class="modal-box" style="max-width:520px;">
       <div class="modal-header">
-        <h3>Daftar Nomor Soal</h3>
+        <div>
+          <h3 id="drawerModalTitle">Daftar Nomor Soal</h3>
+          <p id="drawerModalSubtitle" class="hidden" style="font-size:12.5px; color:#475569; margin-top:2px;">
+            Periksa kembali nomor yang masih putih (belum dijawab) atau kuning (ragu-ragu) sebelum mengumpulkan jawaban.
+          </p>
+        </div>
         <button type="button" class="close-btn" onclick="toggleDrawer(false)">&times;</button>
       </div>
+      <div id="drawerSummaryBar" class="review-map-summary hidden"></div>
       <div id="questionGrid" class="grid-soal"></div>
       <div class="legend">
         <span><i class="dot" style="background:var(--success);"></i> Dijawab</span>
         <span><i class="dot" style="background:var(--warning);"></i> Ragu-ragu</span>
         <span><i class="dot" style="background:white;"></i> Belum Dijawab</span>
+      </div>
+      <div id="drawerSubmitFooter" class="hidden" style="margin-top:18px; padding-top:14px; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+        <button type="button" class="btn" style="background:#e2e8f0; color:#1e293b;" onclick="toggleDrawer(false)">
+          ← Kembali ke Soal
+        </button>
+        <button type="button" id="btnProceedFromDrawer" class="btn btn-finish" onclick="proceedFromReviewDrawerToConfirm()">
+          Lanjut Kumpulkan Jawaban →
+        </button>
       </div>
     </div>
   </div>
@@ -2002,6 +2248,7 @@
       state.violations = (state.violations || 0) + 1;
       saveState();
       updateViolationBadgeUI();
+      sendStudentMonitorHeartbeat();
 
       if (state.violations >= MAX_VIOLATIONS) {
         disableExamSecurity();
@@ -2017,6 +2264,77 @@
           `Pelanggaran tercatat: <strong>${state.violations} dari ${MAX_VIOLATIONS}</strong>.<br>` +
           `Jawabanmu tetap tersimpan otomatis, namun jika mencapai <strong>${MAX_VIOLATIONS}x pelanggaran</strong>, ujian akan langsung dikunci dan dikumpulkan otomatis!`
         );
+      }
+    }
+
+    let studentHeartbeatInterval = null;
+
+    function buildStudentMonitorPayload(statusOverride) {
+      if (!state.student || !state.examMeta) return null;
+      const currentSub = (state.subtests && state.subtests[state.subtestIndex]) ? state.subtests[state.subtestIndex] : null;
+      const subName = currentSub
+        ? `Tahap ${state.subtestIndex + 1}: ${currentSub.namaSubtes}`
+        : "-";
+      let st = statusOverride;
+      if (!st) {
+        if (state.isFinished) st = "SELESAI";
+        else if (state.inBreakScreen) st = "JEDA";
+        else if (state.examStarted) st = "MENGERJAKAN";
+        else st = "LOGIN";
+      }
+      return {
+        action: "updateMonitor",
+        username: state.student.username,
+        noPeserta: state.student.noPeserta,
+        nama: state.student.namaKonfirmasi || state.student.namaLengkap,
+        kelas: state.student.kelas,
+        sesiUjian: state.examMeta.namaTesLengkap || state.examMeta.sesiAktif || "",
+        subtesAktif: subName,
+        soalSaatIni: state.examStarted && !state.inBreakScreen ? (state.currentIndex + 1) : 0,
+        totalSoal: Array.isArray(state.questions) ? state.questions.length : 0,
+        pelanggaran: state.violations || 0,
+        resetCount: state.resetCount || 0,
+        status: st
+      };
+    }
+
+    async function sendStudentMonitorHeartbeat(statusOverride) {
+      const payload = buildStudentMonitorPayload(statusOverride);
+      if (!payload) return;
+      try {
+        const res = await apiGet({
+          action: "updateMonitor",
+          data: JSON.stringify(payload)
+        });
+        if (res && res.status === "success" && res.monitorState) {
+          const srvReset = Number(res.monitorState.totalReset) || 0;
+          const srvViol = Number(res.monitorState.pelanggaran) || 0;
+          if (srvReset > (state.resetCount || 0)) {
+            state.resetCount = srvReset;
+            state.violations = srvViol;
+            saveState();
+            updateViolationBadgeUI();
+          }
+        }
+      } catch (e) {}
+    }
+
+    function startStudentMonitorHeartbeat() {
+      stopStudentMonitorHeartbeat();
+      sendStudentMonitorHeartbeat();
+      studentHeartbeatInterval = setInterval(() => {
+        if (!state.student || state.isFinished) {
+          stopStudentMonitorHeartbeat();
+          return;
+        }
+        sendStudentMonitorHeartbeat();
+      }, 15000);
+    }
+
+    function stopStudentMonitorHeartbeat() {
+      if (studentHeartbeatInterval) {
+        clearInterval(studentHeartbeatInterval);
+        studentHeartbeatInterval = null;
       }
     }
 
@@ -2069,6 +2387,7 @@
 
     function disableExamSecurity() {
       examSecurityActive = false;
+      stopStudentMonitorHeartbeat();
       releaseScreenWakeLock();
       window.onpopstate = null;
       document.onvisibilitychange = null;
@@ -2104,6 +2423,7 @@
       examStarted: false,
       isFinished: false,
       violations: 0,
+      resetCount: 0,
       pendingPayloads: {}
     };
 
@@ -2358,6 +2678,7 @@
       renderSubtestStepper();
       renderQuestion();
       startRealTimeTimer();
+      startStudentMonitorHeartbeat();
     }
 
     function renderSubtestStepper() {
@@ -2585,8 +2906,9 @@
         state.currentIndex = target;
         saveState();
         renderQuestion();
+        sendStudentMonitorHeartbeat();
       } else if (target >= state.questions.length) {
-        openConfirmModal();
+        toggleDrawer(true, true);
       }
     }
 
@@ -2615,9 +2937,45 @@
       return Boolean(ans);
     }
 
-    function toggleDrawer(show) {
+    function toggleDrawer(show, isPreSubmitReview = false) {
       const modal = document.getElementById("drawerModal");
       if (!show) { modal.classList.add("hidden"); return; }
+
+      const titleEl = document.getElementById("drawerModalTitle");
+      const subEl = document.getElementById("drawerModalSubtitle");
+      const sumBar = document.getElementById("drawerSummaryBar");
+      const footerEl = document.getElementById("drawerSubmitFooter");
+      const proceedBtn = document.getElementById("btnProceedFromDrawer");
+      const isLastSubtest = state.subtestIndex >= state.subtests.length - 1;
+
+      const total = state.questions.length;
+      const answeredCount = state.questions.filter(isQuestionAnswered).length;
+      const doubtCount = state.questions.filter(q => !!state.doubtful[q.id]).length;
+      const unansweredCount = Math.max(0, total - answeredCount);
+
+      if (isPreSubmitReview) {
+        titleEl.textContent = "Periksa Daftar Nomor Soal";
+        subEl.classList.remove("hidden");
+        sumBar.classList.remove("hidden");
+        sumBar.innerHTML = `
+          <span style="color:#166534;">🟩 Dijawab: ${answeredCount}/${total}</span>
+          <span>•</span>
+          <span style="color:#b45309;">🟨 Ragu-ragu: ${doubtCount}</span>
+          <span>•</span>
+          <span style="color:#dc2626;">⬜ Belum Dijawab: ${unansweredCount}</span>
+        `;
+        footerEl.classList.remove("hidden");
+        if (proceedBtn) {
+          proceedBtn.textContent = isLastSubtest
+            ? "Lanjut Kumpulkan Jawaban →"
+            : "Lanjut Selesaikan Subtes →";
+        }
+      } else {
+        titleEl.textContent = "Daftar Nomor Soal";
+        subEl.classList.add("hidden");
+        sumBar.classList.add("hidden");
+        footerEl.classList.add("hidden");
+      }
 
       const grid = document.getElementById("questionGrid");
       grid.innerHTML = "";
@@ -2639,6 +2997,11 @@
         grid.appendChild(btn);
       });
       modal.classList.remove("hidden");
+    }
+
+    function proceedFromReviewDrawerToConfirm() {
+      toggleDrawer(false);
+      openConfirmModal();
     }
 
     // =========================================================================
@@ -2715,6 +3078,7 @@
         mapel: record.key,
         durasiPengerjaan: record.durasiStr,
         pelanggaran: state.violations || 0,
+        autoByViolation: !!forceRecordFlag,
         forcedByViolation: !!forceRecordFlag,
         skor: 0,
         jawaban: record.answers
@@ -3016,8 +3380,10 @@
       soalBrief: [],
       rekap: [],
       siswaList: [],
+      monitorLive: { summary: {}, participants: [] },
       info: {}
     };
+    let monitorAutoRefreshTimer = null;
     let parsedExcelRows = [];
     let targetUploadSoalId = "";
 
@@ -3113,6 +3479,7 @@
           soalBrief: data.soalBrief || [],
           rekap: data.rekap || [],
           siswaList: data.siswaList || [],
+          monitorLive: data.monitorLive || { summary: {}, participants: [] },
           info: data.info || {}
         };
 
@@ -3121,9 +3488,11 @@
 
         populateMapelDropdowns();
         applySettingsInfoToUI(teacherDataCache.info);
+        renderMonitorLiveSection();
         renderTeacherTable();
         renderBankSoalOverview();
         renderKartuPesertaGrid();
+        startMonitorAutoRefresh();
         return true;
       } catch (err) {
         alert("Gagal memuat data proktor: " + err.message);
@@ -3612,6 +3981,410 @@
       }
     }
 
+    function startMonitorAutoRefresh() {
+      stopMonitorAutoRefresh();
+      const chk = document.getElementById("chkAutoRefreshMonitor");
+      if (!chk || !chk.checked) return;
+      monitorAutoRefreshTimer = setInterval(() => {
+        const panel = document.getElementById("teacherSection");
+        const tabRekap = document.getElementById("proctorTabRekap");
+        if (!panel || panel.classList.contains("hidden") || !tabRekap || tabRekap.classList.contains("hidden")) {
+          return;
+        }
+        refreshMonitorLiveOnly(false);
+      }, 12000);
+    }
+
+    function stopMonitorAutoRefresh() {
+      if (monitorAutoRefreshTimer) {
+        clearInterval(monitorAutoRefreshTimer);
+        monitorAutoRefreshTimer = null;
+      }
+    }
+
+    function toggleMonitorAutoRefresh() {
+      const chk = document.getElementById("chkAutoRefreshMonitor");
+      if (chk && chk.checked) startMonitorAutoRefresh();
+      else stopMonitorAutoRefresh();
+    }
+
+    async function refreshMonitorLiveOnly(showErrorAlert) {
+      if (!teacherCreds.username) return;
+      try {
+        const res = await apiGet({
+          action: "getMonitorLive",
+          username: teacherCreds.username,
+          password: teacherCreds.password
+        });
+        if (res && res.status === "success" && res.monitorLive) {
+          teacherDataCache.monitorLive = res.monitorLive;
+          renderMonitorLiveSection();
+        } else if (showErrorAlert) {
+          alert((res && res.message) || "Gagal memuat status monitor live.");
+        }
+      } catch (err) {
+        if (showErrorAlert) alert("Kesalahan koneksi: " + err.message);
+      }
+    }
+
+    function renderMonitorLiveSection() {
+      const live = teacherDataCache.monitorLive || { summary: {}, participants: [] };
+      const sum = live.summary || {};
+      const list = Array.isArray(live.participants) ? live.participants : [];
+
+      document.getElementById("monTotalSiswa").textContent = sum.totalSiswa || list.length || 0;
+      document.getElementById("monSedangAktif").textContent = sum.sedangMengerjakan || 0;
+      document.getElementById("monSelesai").textContent = sum.selesai || 0;
+      document.getElementById("monTerkunci").textContent = sum.terkunci || 0;
+      document.getElementById("monBelumLogin").textContent = sum.belumLogin || 0;
+
+      const subEl = document.getElementById("monitorLiveSubtitle");
+      if (subEl) {
+        const nowStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        subEl.textContent = `Sesi: ${live.sesiLabel || "-"} • Pembaruan terakhir pukul ${nowStr}`;
+      }
+
+      const monKelasSel = document.getElementById("filterMonKelas");
+      if (monKelasSel) {
+        const prevK = monKelasSel.value;
+        const uniqueK = [...new Set(list.map(p => String(p.kelas || "").trim()).filter(Boolean))].sort();
+        monKelasSel.innerHTML = `<option value="ALL">Semua Kelas</option>` +
+          uniqueK.map(k => `<option value="${escapeHtmlAttr(k)}">${escapeHtmlAttr(k)}</option>`).join("");
+        if (prevK && (prevK === "ALL" || uniqueK.includes(prevK))) monKelasSel.value = prevK;
+      }
+
+      renderMonitorLiveTable();
+    }
+
+    function renderMonitorLiveTable() {
+      const tbody = document.getElementById("monitorLiveTableBody");
+      if (!tbody) return;
+
+      const live = teacherDataCache.monitorLive || { participants: [] };
+      const list = Array.isArray(live.participants) ? live.participants : [];
+
+      const fKelas = String((document.getElementById("filterMonKelas") || {}).value || "ALL").trim().toLowerCase();
+      const fStatus = String((document.getElementById("filterMonStatus") || {}).value || "ALL").trim().toUpperCase();
+      const qSearch = String((document.getElementById("searchMonSiswa") || {}).value || "").trim().toLowerCase();
+
+      const filtered = list.filter(p => {
+        const okK = (fKelas === "all") || (String(p.kelas || "").trim().toLowerCase() === fKelas);
+        const st = String(p.status || "BELUM_LOGIN").toUpperCase();
+        const viol = Number(p.pelanggaran) || 0;
+
+        let okS = true;
+        if (fStatus === "AKTIF") okS = (st === "LOGIN" || st === "MENGERJAKAN" || st === "JEDA");
+        else if (fStatus === "PELANGGARAN") okS = (viol > 0 && viol < 3 && st !== "TERKUNCI");
+        else if (fStatus === "TERKUNCI") okS = (st === "TERKUNCI" || viol >= 3);
+        else if (fStatus === "SELESAI") okS = (st === "SELESAI");
+        else if (fStatus === "BELUM_LOGIN") okS = (st === "BELUM_LOGIN");
+
+        const okQ = !qSearch ||
+          String(p.nama || "").toLowerCase().includes(qSearch) ||
+          String(p.noPeserta || "").toLowerCase().includes(qSearch) ||
+          String(p.username || "").toLowerCase().includes(qSearch);
+
+        return okK && okS && okQ;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b;">Tidak ada peserta yang sesuai filter monitor.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const st = String(p.status || "BELUM_LOGIN").toUpperCase();
+        const viol = Number(p.pelanggaran) || 0;
+
+        let badgeHtml = `<span class="status-pill st-belum">⚪ Belum Login</span>`;
+        if (st === "TERKUNCI" || viol >= 3) {
+          badgeHtml = `<span class="status-pill st-terkunci">🔒 Terkunci (3/3)</span>`;
+        } else if (st === "SELESAI") {
+          badgeHtml = `<span class="status-pill st-selesai">✅ Selesai${p.skorAkhir !== null && p.skorAkhir !== undefined ? ` (${p.skorAkhir})` : ""}</span>`;
+        } else if (st === "MENGERJAKAN") {
+          badgeHtml = `<span class="status-pill st-aktif">🟡 Mengerjakan</span>`;
+        } else if (st === "JEDA") {
+          badgeHtml = `<span class="status-pill st-jeda">⏸️ Jeda Subtes</span>`;
+        } else if (st === "LOGIN") {
+          badgeHtml = `<span class="status-pill st-login">🔵 Sudah Login</span>`;
+        }
+
+        let tahapTxt = "-";
+        if (st === "MENGERJAKAN") {
+          const posInfo = p.totalSoal > 0 ? ` • Soal ${p.soalSaatIni}/${p.totalSoal}` : "";
+          tahapTxt = `<strong>${escapeHtmlAttr(p.subtesAktif || "-")}</strong>${posInfo}`;
+        } else if (st === "JEDA") {
+          tahapTxt = `${escapeHtmlAttr(p.subtesAktif || "-")} (Menunggu tahap berikutnya)`;
+        } else if (st === "LOGIN") {
+          tahapTxt = `Konfirmasi Data &amp; Token`;
+        } else if (st === "SELESAI") {
+          tahapTxt = `Selesai (${escapeHtmlAttr(p.updateTerakhir || "-")})`;
+        } else if (st === "TERKUNCI") {
+          tahapTxt = `Dikunci otomatis (${escapeHtmlAttr(p.subtesAktif || "-")})`;
+        }
+
+        const violCls = (st === "TERKUNCI" || viol >= 3) ? "viol-lock" : (viol > 0 ? "viol-warn" : "viol-0");
+        const canReset = (viol >= 1 && viol < 3 && st !== "TERKUNCI" && st !== "SELESAI");
+
+        return `
+          <tr>
+            <td><strong>${escapeHtmlAttr(p.noPeserta || "-")}</strong></td>
+            <td><strong>${escapeHtmlAttr(p.nama || "-")}</strong></td>
+            <td>${escapeHtmlAttr(p.kelas || "-")}</td>
+            <td>${badgeHtml}</td>
+            <td style="font-size:12.5px;">${tahapTxt}</td>
+            <td style="text-align:center;"><span class="viol-pill ${violCls}">${viol}/3</span></td>
+            <td>
+              <button type="button" class="btn-reset-viol"
+                ${canReset ? "" : "disabled"}
+                onclick="resetStudentViolationByProctor('${escapeHtmlAttr(p.username)}', '${escapeHtmlAttr(p.nama)}', ${viol})"
+                title="${canReset ? "Kembalikan hitungan pelanggaran menjadi 0/3" : "Reset hanya tersedia bagi peserta aktif dengan pelanggaran 1/3 atau 2/3"}">
+                🔄 Reset Pelanggaran
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    async function resetStudentViolationByProctor(targetUsername, targetNama, currentViol) {
+      if (!confirm(
+        `Reset pelanggaran untuk siswa "${targetNama}" dari ${currentViol}/3 menjadi 0/3?
+
+` +
+        `Catatan: Siswa tetap dapat melanjutkan ujian dan layar siswa akan otomatis diperbarui menjadi 0/3.`
+      )) {
+        return;
+      }
+
+      try {
+        const res = await apiGet({
+          action: "resetPelanggaran",
+          username: teacherCreds.username,
+          password: teacherCreds.password,
+          targetUsername: targetUsername
+        });
+
+        if (res && res.status === "success") {
+          alert("✅ " + res.message);
+          await refreshMonitorLiveOnly(false);
+        } else {
+          alert((res && res.message) || "Gagal mereset pelanggaran.");
+        }
+      } catch (err) {
+        alert("Kesalahan koneksi: " + err.message);
+      }
+    }
+
+    // =========================================================================
+    // MODUL IMPORT IDENTITAS SISWA (.XLSX) DI TAB 4 KARTU PESERTA
+    // =========================================================================
+    let parsedSiswaExcelRows = [];
+
+    function downloadSiswaTemplateExcel() {
+      if (typeof XLSX === "undefined") {
+        alert("Pustaka Excel belum selesai dimuat. Periksa koneksi internet Anda.");
+        return;
+      }
+      const sampleRows = [
+        ["No_Peserta", "Username", "Password", "Nama_Lengkap", "Jenis_Kelamin", "Kelas"],
+        ["001", "siswa001", "12345*", "AHMAD FAUZI", "Laki-laki", "5A"],
+        ["002", "siswa002", "12345*", "SITI AISYAH", "Perempuan", "5A"]
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(sampleRows);
+      const range = XLSX.utils.decode_range(ws["!ref"]);
+      for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const addr = XLSX.utils.encode_cell({ r: R, c: C });
+          if (ws[addr]) {
+            ws[addr].t = "s";
+            ws[addr].z = "@";
+          }
+        }
+      }
+      ws["!cols"] = [
+        { wch: 14 }, { wch: 18 }, { wch: 16 }, { wch: 30 }, { wch: 16 }, { wch: 12 }
+      ];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Akun_Siswa");
+      XLSX.writeFile(wb, "Template_Identitas_Siswa_CBT.xlsx");
+    }
+
+    function handleSiswaExcelSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (typeof XLSX === "undefined") {
+        alert("Pustaka Excel (SheetJS) belum termuat. Periksa koneksi internet Anda.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const ws = workbook.Sheets[workbook.SheetNames[0]];
+          const rawMatrix = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", raw: false });
+
+          let headerIdx = rawMatrix.findIndex(row =>
+            row.some(c => {
+              const s = String(c).trim().toLowerCase();
+              return s === "username" || s === "nama_lengkap" || s === "nama lengkap";
+            })
+          );
+          if (headerIdx === -1) headerIdx = 0;
+
+          const jsonRows = XLSX.utils.sheet_to_json(ws, { range: headerIdx, defval: "", raw: false });
+          parseAndValidateSiswaRows(jsonRows);
+        } catch (err) {
+          alert("Gagal membaca file Excel siswa: " + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function parseAndValidateSiswaRows(rawRows) {
+      parsedSiswaExcelRows = [];
+      const seenUser = new Set();
+      let validCount = 0;
+      let errorCount = 0;
+
+      rawRows.forEach((row, idx) => {
+        const noPeserta = normalizeColKey(row, ["No_Peserta", "No Peserta", "Nomor Peserta", "No"]);
+        const username = normalizeColKey(row, ["Username", "NISN", "User"]);
+        const password = normalizeColKey(row, ["Password", "Pass", "Sandi"]);
+        const namaLengkap = normalizeColKey(row, ["Nama_Lengkap", "Nama Lengkap", "Nama Siswa", "Nama"]);
+        const jenisKelamin = normalizeColKey(row, ["Jenis_Kelamin", "Jenis Kelamin", "JK", "Gender"]);
+        const kelas = normalizeColKey(row, ["Kelas", "Rombel"]);
+
+        if (!noPeserta && !username && !namaLengkap) return;
+
+        const errs = [];
+        if (!username) errs.push("Username kosong");
+        if (!namaLengkap) errs.push("Nama Lengkap kosong");
+        if (username && seenUser.has(username.toLowerCase())) {
+          errs.push("Username duplikat di file");
+        }
+        if (username) seenUser.add(username.toLowerCase());
+
+        const isValid = errs.length === 0;
+        if (isValid) validCount++;
+        else errorCount++;
+
+        parsedSiswaExcelRows.push({
+          rowNum: parsedSiswaExcelRows.length + 1,
+          isValid: isValid,
+          errorMsg: errs.join("; "),
+          studentItem: {
+            noPeserta: noPeserta || String(idx + 1).padStart(3, "0"),
+            username: username,
+            password: password || "12345*",
+            namaLengkap: namaLengkap,
+            jenisKelamin: jenisKelamin || "-",
+            kelas: kelas || "-"
+          }
+        });
+      });
+
+      const banner = document.getElementById("importSiswaBanner");
+      const actionRow = document.getElementById("importSiswaActionRow");
+      const previewWrap = document.getElementById("importSiswaPreviewWrap");
+      const tbody = document.getElementById("importSiswaPreviewBody");
+      const btnSubmit = document.getElementById("btnSubmitImportSiswa");
+
+      if (parsedSiswaExcelRows.length === 0) {
+        banner.className = "sync-status sync-err";
+        banner.textContent = "Tidak ditemukan baris data siswa pada file Excel yang dipilih.";
+        banner.classList.remove("hidden");
+        actionRow.classList.add("hidden");
+        previewWrap.classList.add("hidden");
+        return;
+      }
+
+      banner.className = errorCount > 0 ? "sync-status sync-wait" : "sync-status sync-ok";
+      banner.textContent = errorCount > 0
+        ? `Ditemukan ${validCount} siswa valid dan ${errorCount} baris bermasalah (baris bermasalah dilewati).`
+        : `Sempurna! Seluruh ${validCount} data peserta didik valid dan siap disimpan ke Akun_Siswa.`;
+      banner.classList.remove("hidden");
+
+      document.getElementById("importSiswaSummaryText").textContent = `Siap simpan: ${validCount} peserta`;
+      btnSubmit.disabled = validCount === 0;
+      actionRow.classList.remove("hidden");
+      previewWrap.classList.remove("hidden");
+
+      tbody.innerHTML = parsedSiswaExcelRows.map(r => {
+        const s = r.studentItem;
+        return `
+          <tr style="${r.isValid ? "" : "background:#fef2f2;"}">
+            <td style="text-align:center; font-weight:700;">${r.rowNum}</td>
+            <td>${escapeHtmlAttr(s.noPeserta)}</td>
+            <td><code>${escapeHtmlAttr(s.username || "-")}</code></td>
+            <td><code>${escapeHtmlAttr(s.password)}</code></td>
+            <td><strong>${escapeHtmlAttr(s.namaLengkap || "-")}</strong></td>
+            <td>${escapeHtmlAttr(s.jenisKelamin)}</td>
+            <td>${escapeHtmlAttr(s.kelas)}</td>
+            <td>
+              ${r.isValid
+                ? `<span style="color:#166534; font-weight:700;">✔ Valid</span>`
+                : `<span class="badge-tipe badge-err">✖ ${escapeHtmlAttr(r.errorMsg)}</span>`}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function clearSiswaExcelPreview() {
+      parsedSiswaExcelRows = [];
+      const inp = document.getElementById("importSiswaExcelFile");
+      if (inp) inp.value = "";
+      document.getElementById("importSiswaBanner").classList.add("hidden");
+      document.getElementById("importSiswaActionRow").classList.add("hidden");
+      document.getElementById("importSiswaPreviewWrap").classList.add("hidden");
+    }
+
+    async function submitImportedStudents() {
+      const validStudents = parsedSiswaExcelRows.filter(r => r.isValid).map(r => r.studentItem);
+      if (validStudents.length === 0) return;
+
+      const mode = document.getElementById("importSiswaModeSelect").value;
+      if (mode === "REPLACE") {
+        const ok = confirm(
+          `PERHATIAN: Mode "Timpa Seluruh Data Akun_Siswa Lama" akan menghapus seluruh data siswa lama dan menggantinya dengan ${validStudents.length} peserta baru.
+
+Lanjutkan?`
+        );
+        if (!ok) return;
+      }
+
+      const btn = document.getElementById("btnSubmitImportSiswa");
+      btn.disabled = true;
+      btn.textContent = "Menyimpan ke Akun_Siswa...";
+
+      try {
+        const res = await apiPost({
+          action: "importSiswa",
+          username: teacherCreds.username,
+          password: teacherCreds.password,
+          mode: mode,
+          students: validStudents
+        });
+
+        if (res && res.status === "success") {
+          alert("✅ " + res.message);
+          clearSiswaExcelPreview();
+          await loadTeacherRekap();
+          switchProctorTab("kartu");
+        } else {
+          alert((res && res.message) || "Gagal menyimpan data identitas siswa.");
+        }
+      } catch (err) {
+        alert("Gagal terhubung ke server: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✔ Simpan Identitas Siswa ke Database";
+      }
+    }
+
     function renderKartuPesertaGrid() {
       const grid = document.getElementById("kartuPesertaGrid");
       if (!grid) return;
@@ -3862,30 +4635,77 @@
     // =========================================================================
     // MODUL IMPORT EXCEL (.XLSX) DI PANEL PROKTOR
     // =========================================================================
-    const ORIGINAL_TEMPLATE_XLSX_BASE64 = "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";
-
     function downloadExcelTemplateFromWeb() {
-      try {
-        const binaryStr = atob(ORIGINAL_TEMPLATE_XLSX_BASE64);
-        const len = binaryStr.length;
-        const bytes = new Uint8Array(len);
-        for (let i = 0; i < len; i++) {
-          bytes[i] = binaryStr.charCodeAt(i);
-        }
-        const blob = new Blob([bytes], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "Template_Bank_Soal.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 1500);
-      } catch (err) {
-        alert("Gagal mengunduh template Excel: " + err.message);
+      if (typeof XLSX === "undefined") {
+        alert("Pustaka Excel belum termuat. Periksa koneksi internet.");
+        return;
       }
+      const sampleData = [
+        {
+          "No": 1,
+          "Tipe": "PG",
+          "Wacana": "",
+          "Pertanyaan": "Ibu kota Provinsi Kalimantan Selatan saat ini adalah ....",
+          "Opsi A": "Banjarmasin",
+          "Opsi B": "Banjarbaru",
+          "Opsi C": "Martapura",
+          "Opsi D": "Pelaihari",
+          "Pernyataan 1": "",
+          "Pernyataan 2": "",
+          "Pernyataan 3": "",
+          "Kunci": "B",
+          "Pembahasan": "Sesuai UU No. 8 Tahun 2022, Kota Banjarbaru adalah ibu kota Provinsi Kalimantan Selatan."
+        },
+        {
+          "No": 2,
+          "Tipe": "PGK_MULTI",
+          "Wacana": "Hutan mangrove di pesisir Kalimantan Selatan berperan penting menahan abrasi pantai dan menjadi habitat satwa pesisir.",
+          "Pertanyaan": "Manakah dua manfaat hutan mangrove berdasarkan bacaan? (Pilih 2 jawaban benar)",
+          "Opsi A": "Menahan abrasi pantai",
+          "Opsi B": "Menghasilkan kayu bakar",
+          "Opsi C": "Menjadi habitat satwa pesisir",
+          "Opsi D": "Meningkatkan suhu pantai",
+          "Pernyataan 1": "",
+          "Pernyataan 2": "",
+          "Pernyataan 3": "",
+          "Kunci": "A, C",
+          "Pembahasan": "Manfaat utama dalam teks adalah menahan abrasi (A) dan habitat satwa (C)."
+        },
+        {
+          "No": 3,
+          "Tipe": "PGK_KATEGORI",
+          "Wacana": "SAMA",
+          "Pertanyaan": "Tentukan Benar atau Salah untuk pernyataan berikut berdasarkan bacaan nomor 2!",
+          "Opsi A": "",
+          "Opsi B": "",
+          "Opsi C": "",
+          "Opsi D": "",
+          "Pernyataan 1": "Hutan mangrove membantu menahan abrasi pantai.",
+          "Pernyataan 2": "Hutan mangrove hanya tumbuh di puncak pegunungan.",
+          "Pernyataan 3": "Satwa pesisir hidup di ekosistem mangrove.",
+          "Kunci": "B, S, B",
+          "Pembahasan": "Pernyataan 1 dan 3 benar, pernyataan 2 salah."
+        }
+      ];
+
+      const ws = XLSX.utils.json_to_sheet(sampleData);
+      const range = XLSX.utils.decode_range(ws["!ref"]);
+      for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const addr = XLSX.utils.encode_cell({ r: R, c: C });
+          if (ws[addr]) {
+            ws[addr].t = "s";
+            ws[addr].z = "@";
+          }
+        }
+      }
+      ws["!cols"] = [
+        { wch: 6 }, { wch: 15 }, { wch: 32 }, { wch: 36 }, { wch: 18 }, { wch: 18 }, { wch: 18 }, { wch: 18 },
+        { wch: 24 }, { wch: 24 }, { wch: 24 }, { wch: 12 }, { wch: 30 }
+      ];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Input_Soal");
+      XLSX.writeFile(wb, "Template_Bank_Soal_CBT.xlsx");
     }
 
     function normalizeColKey(obj, candidates) {
@@ -3921,13 +4741,13 @@
           const firstSheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[firstSheetName];
 
-          const rawMatrix = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "" });
+          const rawMatrix = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "", raw: false });
           let headerIdx = rawMatrix.findIndex(row =>
             row.some(cell => String(cell).trim().toLowerCase() === "pertanyaan")
           );
           if (headerIdx === -1) headerIdx = 0;
 
-          const jsonRows = XLSX.utils.sheet_to_json(worksheet, { range: headerIdx, defval: "" });
+          const jsonRows = XLSX.utils.sheet_to_json(worksheet, { range: headerIdx, defval: "", raw: false });
           parseAndValidateExcelRows(jsonRows);
         } catch (err) {
           alert("Gagal membaca file Excel: " + err.message);
@@ -4466,6 +5286,7 @@
     }
 
     function closeTeacherDashboard() {
+      stopMonitorAutoRefresh();
       teacherCreds = { username: "", password: "" };
       document.getElementById("teacherSection").classList.add("hidden");
       document.getElementById("loginSection").classList.remove("hidden");
